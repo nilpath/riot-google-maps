@@ -1,3 +1,1 @@
-let [one, two, three] = [1,2,3];
-
-console.log(one, two, three);
+export {default as GoogleMap} from "./GoogleMap.tag";

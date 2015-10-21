@@ -2,13 +2,8 @@
   "name": "riot-google-maps",
   "version": "0.0.1",
   "description": "riotjs google maps integration",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "clean": "rimraf lib",
-    "lint": "jshint src",
-    "prebuild": "npm run lint && npm run clean",
-    "build": "babel src --out-dir lib",
-    "pretest": "npm run lint",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -22,9 +17,5 @@
   "author": "Christoffer Ahrling",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.8.23",
-    "jshint": "^2.8.0",
-    "rimraf": "^2.4.3",
-    "riot": "^2.2.4"
   }
 }
