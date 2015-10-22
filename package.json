@@ -4,7 +4,7 @@
   "description": "riotjs google maps integration",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/karma/bin/karma start karma.conf.js"
   },
   "keywords": [
     "riotjs",
@@ -17,5 +17,16 @@
   "author": "Christoffer Ahrling",
   "license": "MIT",
   "devDependencies": {
+    "babel": "^5.8.23",
+    "babelify": "^6.4.0",
+    "browserify": "^11.2.0",
+    "expect.js": "^0.3.1",
+    "karma": "^0.13.9",
+    "karma-browserify": "^4.4.0",
+    "karma-mocha": "^0.2.0",
+    "karma-mocha-reporter": "^1.1.1",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "riot": "^2.2.4",
+    "riotify": "^0.1.2"
   }
 }
