@@ -2,12 +2,27 @@
   <yield />
   
   <script type="es6">
-    const {zoom, center, mapTypeId} = this.opts;
+    import {googleMapEvents} from './events';
+    import {registerEvents, unregisterEvents} from './utils';
     
     this.on('mount', function() {
-      const options = {zoom, center, mapTypeId};
-      this.map = this.createMap(this.root, options);
+      const mapOptions = this.composeMapOptions(this.opts);
+      this.map = this.createMap(this.root, mapOptions);
+      this.registeredEvents = registerEvents(
+        googleMapEvents, 
+        this.opts,
+        this.map
+      );
     });
+    
+    this.on('unmount', function() {
+      unregisterEvents(this.registeredEvents);
+    });
+    
+    this.composeMapOptions = (opts) => {
+      const { center, heading, mapTypeId, options, streetview, tilt, zoom } = this.opts;
+      return { center, heading, mapTypeId, streetview, tilt, zoom, ...options };
+    };
     
     this.createMap = (elem, options) => {
       return new google.maps.Map(elem, options);
