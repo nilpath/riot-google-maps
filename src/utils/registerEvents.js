@@ -1,6 +1,6 @@
 const {addListener} = google.maps.event;
 
-export default function(eventList, handlers, mapInstance) {
+export default function registerEvents(eventList, handlers, mapInstance) {
   const registeredEvents = eventList.reduce((acc, eventName) => {
     const onEventName = `on${eventName}`;
     
