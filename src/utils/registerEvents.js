@@ -5,7 +5,7 @@ export default function registerEvents(eventList, handlers, instance) {
     const onEventName = `on${eventName}`;
     
     if (handlers.hasOwnProperty(onEventName)) {
-      acc.push(addListener(instance, eventName, onEventName));
+      acc.push(addListener(instance, eventName, handlers[onEventName]));
     }
     
     return acc;

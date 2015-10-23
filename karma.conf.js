@@ -1,12 +1,13 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['browserify', 'mocha'],
+    frameworks: ['browserify', 'mocha', 'sinon'],
     plugins: [
       'karma-mocha',
       'karma-mocha-reporter',
       'karma-phantomjs-launcher',
-      'karma-browserify'
+      'karma-browserify',
+      'karma-sinon'
     ],
     files: [
       'node_modules/expect.js/index.js',

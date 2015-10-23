@@ -1,8 +1,8 @@
 window.google = {
   maps: {
     event: {
-      addListener: function() {},
-      removeListener: function() {}
+      addListener: sinon.stub(),
+      removeListener: sinon.stub()
     }
   }
 };
