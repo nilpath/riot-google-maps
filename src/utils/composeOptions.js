@@ -10,7 +10,7 @@ export default function composeOptions(optionNames, opts) {
     }
     
     return acc;
-  });
+  }, {});
   
-  return {...composition, ...options};
+  return { ...composition, ...options };
 }
