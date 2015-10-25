@@ -25,6 +25,7 @@ export default function GoogleMapMixin() {
   
   this.onUnmount = function () {
     unregisterEvents(this.registeredEvents);
+    this.registeredEvents = undefined;
   };
   
   this.createMap = function (elem, options) {
