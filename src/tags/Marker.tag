@@ -2,8 +2,8 @@
   <yield />
   
   <script type="es6">
-    import {markerEvents} from './events';
-    import {composeOptions, registerEvents, unregisterEvents} from './utils';
+    import {markerEvents} from '../events';
+    import {composeOptions, registerEvents, unregisterEvents} from '../utils';
     
     const MARKER_OPTIONS = [
       'animation', 

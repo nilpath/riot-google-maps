@@ -2,8 +2,8 @@
   <input type="text" name="search" />
   
   <script type="es6">
-    import {searchBoxEvents} from './events';
-    import {composeOptions, registerEvents, unregisterEvents} from './utils';
+    import {searchBoxEvents} from '../events';
+    import {composeOptions, registerEvents, unregisterEvents} from '../utils';
     
     const SEARCH_BOX_OPTIONS = ['bounds'];
     
