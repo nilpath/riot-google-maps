@@ -26,7 +26,7 @@ export default function MarkerMixin() {
   };
   
   this.onMount = function () {
-    const {mapref} = this.opts;
+    const mapref = this.parent.map;
     const markerOptions = composeOptions(MARKER_OPTIONS, this.opts);
     this.marker = this.createMarker(mapref, markerOptions);
     this.registeredEvents = registerEvents(markerEvents, this.opts, mapref);

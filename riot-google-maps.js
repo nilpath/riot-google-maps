@@ -126,8 +126,7 @@ function MarkerMixin() {
   this.init = function () {};
 
   this.onMount = function () {
-    var mapref = this.opts.mapref;
-
+    var mapref = this.parent.map;
     var markerOptions = (0, _utils.composeOptions)(MARKER_OPTIONS, this.opts);
     this.marker = this.createMarker(mapref, markerOptions);
     this.registeredEvents = (0, _utils.registerEvents)(_events.markerEvents, this.opts, mapref);

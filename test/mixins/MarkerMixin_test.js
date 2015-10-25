@@ -14,7 +14,8 @@ describe('MarkerMixin: ', () => {
       }, {});
       
       mixin = new MarkerMixin();
-      mixin.opts = { mapref: 'mapInstance', ...eventHandlers };
+      mixin.parent = {map: 'mapInstance'};
+      mixin.opts = { ...eventHandlers };
       
       sinon.stub(mixin, 'createMarker').returns('markerInstance');
     });
@@ -25,7 +26,7 @@ describe('MarkerMixin: ', () => {
     
     it('should call createMarker', () => {
       mixin.onMount();
-      expect(mixin.createMarker.calledWith(mixin.opts.mapref, {})).to.be(true);  
+      expect(mixin.createMarker.calledWith(mixin.parent.map, {})).to.be(true);  
     });
     
     it('should store the marker instance on this', () => {
@@ -37,7 +38,7 @@ describe('MarkerMixin: ', () => {
       mixin.onMount();
       markerEvents.forEach(ev => {
         let handler = mixin.opts[`on${ev}`];
-        expect(google.maps.event.addListener.calledWith(mixin.opts.mapref, ev, handler)).to.be(true);
+        expect(google.maps.event.addListener.calledWith(mixin.parent.map, ev, handler)).to.be(true);
       });
     });
     
