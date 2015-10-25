@@ -14,6 +14,7 @@ module.exports = function(config) {
     files: [
       'node_modules/expect.js/index.js',
       'test/helpers/*.js',
+      'test/mocks/*.js',
       'src/index.js',
       'src/tags/*.tag',
       'test/**/*.js'
