@@ -8,6 +8,9 @@ let googleApi = {
       addListener: sinon.stub(),
       removeListener: sinon.stub()
     },
+    places: {
+      SearchBox: sinon.stub()
+    },
     Map: sinon.stub(),
     Marker: sinon.stub().returns(MarkerMock)
   }

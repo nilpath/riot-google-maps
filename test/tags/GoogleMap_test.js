@@ -1,4 +1,4 @@
-describe('GoogleMap: ', () => {
+describe('GoogleMap Tag: ', () => {
   
   var tag, GoogleMapMixinStub;
   

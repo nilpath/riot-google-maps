@@ -1,4 +1,4 @@
-describe('Marker: ', () => {
+describe('Marker Tag: ', () => {
   
   var tag, MarkerMixinStub;
   
