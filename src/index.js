@@ -1,4 +1,5 @@
-export {default as GoogleMap} from "./GoogleMap.tag";
+import {GoogleMapMixin} from './mixins';
 
-export {default as Marker} from "./Marker.tag";
-export {default as SearchBox} from "./SearchBox.tag";
+riot.mixin('GoogleMapMixin', new GoogleMapMixin());
+
+require('./tags/GoogleMap.tag');
