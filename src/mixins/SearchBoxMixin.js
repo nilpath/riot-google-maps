@@ -21,6 +21,7 @@ export default function SearchBoxMixin() {
     const {mapref, controlPosition} = this.opts;
     this.removeFromMap(this.search, controlPosition, mapref);
     unregisterEvents(this.registeredEvents);
+    this.registeredEvents = undefined;
   };
   
   this.createSearchBox = function (searchInput, options) {
