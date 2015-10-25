@@ -2,7 +2,7 @@
   "name": "riot-google-maps",
   "version": "0.0.1",
   "description": "riotjs google maps integration",
-  "main": "src/index.js",
+  "main": "riot-google-maps.js",
   "scripts": {
     "clean": "rimraf ./riot-google-maps.js ./riot-google-maps.min.js",
     "build:lib": "browserify -x riot -t babelify -t riotify src/index.js > riot-google-maps.js",
