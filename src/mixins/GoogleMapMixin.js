@@ -1,7 +1,7 @@
 import {googleMapEvents} from '../events';
 import {composeOptions, registerEvents, unregisterEvents} from '../utils';
 
-var MAP_OPTIONS = [
+const MAP_OPTIONS = [
   'center', 
   'heading', 
   'mapTypeId',
@@ -18,7 +18,6 @@ export default function GoogleMapMixin() {
   };
   
   this.onMount = function () {
-    console.log('mounting');
     const mapOptions = composeOptions(MAP_OPTIONS, this.opts);
     this.map = this.createMap(this.root, mapOptions);
     this.registeredEvents = registerEvents(googleMapEvents, this.opts, this.map);
