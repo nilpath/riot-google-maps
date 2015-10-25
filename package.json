@@ -4,6 +4,11 @@
   "description": "riotjs google maps integration",
   "main": "src/index.js",
   "scripts": {
+    "clean": "rimraf ./riot-google-maps.js ./riot-google-maps.min.js",
+    "build:lib": "browserify -x riot -t babelify -t riotify src/index.js > riot-google-maps.js",
+    "build:min": "uglifyjs -c -m -o riot-google-maps.min.js riot-google-maps.js", 
+    "prebuild": "npm test && npm run-script clean",
+    "build": "npm run-script build:lib && npm run-script build:min",
     "test": "./node_modules/karma/bin/karma start karma.conf.js"
   },
   "keywords": [
@@ -31,6 +36,7 @@
     "karma-sinon": "^1.0.4",
     "riot": "^2.2.4",
     "riotify": "^0.1.2",
-    "sinon": "^1.17.2"
+    "sinon": "^1.17.2",
+    "uglify-js": "^2.5.0"
   }
 }

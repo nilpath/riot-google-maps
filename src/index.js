@@ -8,6 +8,6 @@ riot.mixin('GoogleMapMixin', new GoogleMapMixin());
 riot.mixin('MarkerMixin', new MarkerMixin());
 riot.mixin('SearchBoxMixin', new SearchBoxMixin());
 
-require('./tags/GoogleMap.tag');
-require('./tags/Marker.tag');
-require('./tags/SearchBox.tag');
+import * as GoogleMapTag from './tags/GoogleMap.tag';
+import * as MarkerTag from './tags/Marker.tag';
+import * as SearchBoxTag from './tags/SearchBox.tag';
