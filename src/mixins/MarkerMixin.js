@@ -35,6 +35,7 @@ export default function MarkerMixin() {
   this.onUnmount = function () {
     this.marker.setMap(null);
     unregisterEvents(this.registeredEvents);
+    this.registeredEvents = undefined;
   };
   
   this.createMarker = function (mapInstance, options) {

@@ -1,6 +1,5 @@
 import {default as GoogleMapMixin} from '../../src/mixins/GoogleMapMixin';
 import {googleMapEvents} from '../../src/events';
-import {composeOptions} from '../../src/utils';
 
 describe('GoogleMapMixin: ', () => {
   
