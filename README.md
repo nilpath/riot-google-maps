@@ -1,4 +1,4 @@
-# Riot Google maps
+# Riot Google Maps
 
 > Google Maps tags for Riot.js
 
