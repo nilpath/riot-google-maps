@@ -4,6 +4,7 @@
     center={this.mapData.center} 
     options={this.mapOptions}
   >
+    <search-box controlPosition={this.parent.searchData.controlPosition} />
     <marker each={this.parent.mapData.markers} position={this.position} />
   </google-map>
   
@@ -15,6 +16,10 @@
         position: new google.maps.LatLng(59.32932349, 18.06858080)
       }]
     };
+    
+    this.searchData = {
+      controlPosition: google.maps.ControlPosition.TOP_LEFT
+    }
     
     this.mapOptions = {
       zoomControl: false
