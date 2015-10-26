@@ -41,6 +41,7 @@ export default function GoogleMapMixin() {
   };
   
   this.onUpdate = function () {
+    if(!this.map) return;
     Object.keys(this.opts).forEach((optionName) => {
       const opt = this.opts[optionName];
       const prevOpt = this.prevOpts[optionName];

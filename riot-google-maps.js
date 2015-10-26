@@ -178,6 +178,7 @@ function GoogleMapMixin() {
   this.onUpdate = function () {
     var _this = this;
 
+    if (!this.map) return;
     Object.keys(this.opts).forEach(function (optionName) {
       var opt = _this.opts[optionName];
       var prevOpt = _this.prevOpts[optionName];
@@ -282,6 +283,7 @@ function MarkerMixin() {
   this.onUpdate = function () {
     var _this = this;
 
+    if (!this.marker) return;
     Object.keys(this.opts).forEach(function (optionName) {
       var opt = _this.opts[optionName];
       var prevOpt = _this.prevOpts[optionName];
@@ -353,6 +355,7 @@ function SearchBoxMixin() {
   this.onUpdate = function () {
     var _this = this;
 
+    if (!this.searchBox) return;
     Object.keys(this.opts).forEach(function (optionName) {
       var opt = _this.opts[optionName];
       var prevOpt = _this.prevOpts[optionName];

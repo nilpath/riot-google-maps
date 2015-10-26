@@ -32,6 +32,7 @@ export default function SearchBoxMixin() {
   };
   
   this.onUpdate = function () {
+    if(!this.searchBox) return;
     Object.keys(this.opts).forEach((optionName) => {
       const opt = this.opts[optionName];
       const prevOpt = this.prevOpts[optionName];

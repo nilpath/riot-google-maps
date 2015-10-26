@@ -59,6 +59,7 @@ export default function MarkerMixin() {
   };
   
   this.onUpdate = function () {
+    if(!this.marker) return;
     Object.keys(this.opts).forEach((optionName) => {
       const opt = this.opts[optionName];
       const prevOpt = this.prevOpts[optionName];
