@@ -1,4 +1,4 @@
-
+import {assign} from 'es6-object-assign';
 
 export default function StateMixin() {
   
@@ -10,5 +10,5 @@ export default function StateMixin() {
 }
 
 function storeState() {
-  this.tagState = Object.assign({}, this.opts);
+  this.tagState = assign({}, this.opts);
 }
