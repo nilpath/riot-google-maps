@@ -11,21 +11,45 @@ const MAP_OPTIONS = [
   'zoom'
 ];
 
+const updaters = {
+  center      (center, tag) { tag.map.setCenter(center); },
+  heading     (heading, tag) { tag.map.setHeading(heading); },
+  mapTypeId   (mapTypeId, tag) { tag.map.setMapTypeId(mapTypeId); },
+  options     (options, tag) { tag.map.setOptions(options); },
+  streetView  (streetView, tag) { tag.map.setStreetView(streetView); },
+  tilt        (tilt, tag) { tag.map.setTilt(tilt); },
+  zoom        (zoom, tag) { tag.map.setZoom(zoom); }
+};
+
 export default function GoogleMapMixin() {
     
   this.init = function () {
-    //console.log('init GoogleMapMixin');
+    this.on('mount', this.onMount);
+    this.on('unmount', this.onUnmount);
+    this.on('update', this.onUpdate);
   };
   
   this.onMount = function () {
     const mapOptions = composeOptions(MAP_OPTIONS, this.opts);
-    this.map = this.createMap(this.root, mapOptions);
+    this.map = this.createMap(this.mapelem, mapOptions);
     this.registeredEvents = registerEvents(googleMapEvents, this.opts, this.map);
   };
   
   this.onUnmount = function () {
     unregisterEvents(this.registeredEvents);
     this.registeredEvents = undefined;
+  };
+  
+  this.onUpdate = function () {
+    Object.keys(this.opts).forEach((optionName) => {
+      const opt = this.opts[optionName];
+      const prevOpt = this.prevOpts[optionName];
+      const updater = updaters[optionName];
+      
+      if(opt !== prevOpt && updater) {
+        updater(opt, this);
+      }
+    });
   };
   
   this.createMap = function (elem, options) {

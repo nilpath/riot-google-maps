@@ -1,17 +1,24 @@
 describe('Marker Tag: ', () => {
   
-  var tag, MarkerMixinStub;
+  var tag, mixinStub;
   
   beforeEach(() => {
     var html = document.createElement('marker');
     document.body.appendChild(html);
     
-    MarkerMixinStub = {
-      onMount: sinon.stub(),
-      onUnmount: sinon.stub()
-    };
+    function MarkerMixinStub() {
+      this.init = function() {
+        this.on('mount', this.onMount);
+        this.on('unmount', this.onUnmount);
+        this.on('update', this.onUpdate);
+      };
+      this.onMount = sinon.stub();
+      this.onUnmount = sinon.stub();
+      this.onUpdate = sinon.stub();
+    }
     
-    riot.mixin('MarkerMixin', MarkerMixinStub);
+    mixinStub = new MarkerMixinStub();
+    riot.mixin('MarkerMixin', mixinStub);
   });
   
   afterEach(() => {
@@ -26,7 +33,7 @@ describe('Marker Tag: ', () => {
   
   it('should call MarkerMixin.onMount when mounting', () => {
     tag = riot.mount('marker')[0];
-    expect(MarkerMixinStub.onMount.called).to.be(true);
+    expect(mixinStub.onMount.called).to.be(true);
   });
   
   it('should call MarkerMixin.onUnmount when unmounting', () => {
@@ -34,7 +41,15 @@ describe('Marker Tag: ', () => {
     
     tag.unmount();
     
-    expect(MarkerMixinStub.onUnmount.called).to.be(true);
+    expect(mixinStub.onUnmount.called).to.be(true);
+  });
+  
+  it('should call MarkerMixin.onUpdate when updating', () => {
+    tag = riot.mount('marker')[0];
+    
+    tag.update();
+    
+    expect(mixinStub.onUpdate.called).to.be(true);
   });
   
 });

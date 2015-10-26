@@ -19,9 +19,9 @@ describe('SearchBoxMixin: ', () => {
       
       mixin = new SearchBoxMixin();
       mixin.search = '<input name="search" />';
+      mixin.parent = {map};
       mixin.opts = { 
-        controlPosition: 0,
-        mapref: map, 
+        controlposition: 0,
         ...eventHandlers 
       };
       

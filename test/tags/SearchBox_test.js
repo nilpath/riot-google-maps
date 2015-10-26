@@ -1,17 +1,24 @@
 describe('SearchBox Tag: ', () => {
   
-  var tag, SearchBoxMixinStub;
+  var tag, mixinStub;
   
   beforeEach(() => {
     var html = document.createElement('search-box');
     document.body.appendChild(html);
     
-    SearchBoxMixinStub = {
-      onMount: sinon.stub(),
-      onUnmount: sinon.stub()
-    };
+    function SearchBoxMixinStub() {
+      this.init = function() {
+        this.on('mount', this.onMount);
+        this.on('unmount', this.onUnmount);
+        this.on('update', this.onUpdate);
+      };
+      this.onMount = sinon.stub();
+      this.onUnmount = sinon.stub();
+      this.onUpdate = sinon.stub();
+    }
     
-    riot.mixin('SearchBoxMixin', SearchBoxMixinStub);
+    mixinStub = new SearchBoxMixinStub();
+    riot.mixin('SearchBoxMixin', mixinStub);
   });
   
   afterEach(() => {
@@ -24,17 +31,25 @@ describe('SearchBox Tag: ', () => {
     expect(tag).to.be.an(Object);
   });
   
-  it('should call MarkerMixin.onMount when mounting', () => {
+  it('should call SearchBoxMixin.onMount when mounting', () => {
     tag = riot.mount('search-box')[0];
-    expect(SearchBoxMixinStub.onMount.called).to.be(true);
+    expect(mixinStub.onMount.called).to.be(true);
   });
   
-  it('should call MarkerMixin.onUnmount when unmounting', () => {
+  it('should call SearchBoxMixin.onUnmount when unmounting', () => {
     tag = riot.mount('search-box')[0];
     
     tag.unmount();
     
-    expect(SearchBoxMixinStub.onUnmount.called).to.be(true);
+    expect(mixinStub.onUnmount.called).to.be(true);
+  });
+  
+  it('should call SearchBoxMixin.onUpdate when updating', () => {
+    tag = riot.mount('search-box')[0];
+    
+    tag.update();
+    
+    expect(mixinStub.onUpdate.called).to.be(true);
   });
   
 });

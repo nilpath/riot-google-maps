@@ -3,10 +3,16 @@ import {composeOptions, registerEvents, unregisterEvents} from '../utils';
 
 const SEARCH_BOX_OPTIONS = ['bounds'];
 
+const updaters = {
+  bounds(bounds, tag) { tag.searchBox.setBounds(bounds); }
+};
+
 export default function SearchBoxMixin() {
   
   this.init = function () {
-    
+    this.on('mount', this.onMount);
+    this.on('unmount', this.onUnmount);
+    this.on('update', this.onUpdate);
   };
   
   this.onMount = function () {
@@ -23,6 +29,18 @@ export default function SearchBoxMixin() {
     this.removeFromMap(this.search, controlPosition, mapref);
     unregisterEvents(this.registeredEvents);
     this.registeredEvents = undefined;
+  };
+  
+  this.onUpdate = function () {
+    Object.keys(this.opts).forEach((optionName) => {
+      const opt = this.opts[optionName];
+      const prevOpt = this.prevOpts[optionName];
+      const updater = updaters[optionName];
+      
+      if(opt !== prevOpt && updater) {
+        updater(opt, this);
+      }
+    });
   };
   
   this.createSearchBox = function (searchInput, options) {

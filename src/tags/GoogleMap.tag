@@ -1,9 +1,8 @@
 <google-map>
+  <div name="mapelem"></div>
   <yield />
   
   <script type="es6">
-    this.mixin('GoogleMapMixin');
-    this.on('mount', this.onMount);
-    this.on('unmount', this.onUnmount);
+    this.mixin('GoogleMapMixin', 'StateMixin');
   </script>
 </google-map>

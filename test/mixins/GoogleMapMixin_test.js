@@ -8,7 +8,7 @@ describe('GoogleMapMixin: ', () => {
     
     beforeEach(() => {
       mixin = new GoogleMapMixin();
-      mixin.root = '<google-map />';
+      mixin.mapelem = '<google-map />';
       mixin.opts = googleMapEvents.reduce((acc, ev) => {
         const key = `on${ev}`;
         acc[key] = function() {};
@@ -24,7 +24,7 @@ describe('GoogleMapMixin: ', () => {
     
     it('should call createMap', () => {
       mixin.onMount();
-      expect(mixin.createMap.calledWith(mixin.root, {})).to.be(true);  
+      expect(mixin.createMap.calledWith(mixin.mapelem, {})).to.be(true);  
     });
     
     it('should store the map instance on this', () => {
