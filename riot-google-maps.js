@@ -166,20 +166,19 @@ function SearchBoxMixin() {
   this.init = function () {};
 
   this.onMount = function () {
-    var _opts = this.opts;
-    var mapref = _opts.mapref;
-    var controlPosition = _opts.controlPosition;
+    var controlposition = this.opts.controlposition;
 
+    var mapref = this.parent.map;
     var searchBoxOptions = (0, _utils.composeOptions)(SEARCH_BOX_OPTIONS, this.opts);
     this.searchBox = this.createSearchBox(this.search, searchBoxOptions);
     this.registeredEvents = (0, _utils.registerEvents)(_events.searchBoxEvents, this.opts, this.searchBox);
-    this.addToMap(this.search, controlPosition, mapref);
+    this.addToMap(this.search, controlposition, mapref);
   };
 
   this.onUnmount = function () {
-    var _opts2 = this.opts;
-    var mapref = _opts2.mapref;
-    var controlPosition = _opts2.controlPosition;
+    var _opts = this.opts;
+    var mapref = _opts.mapref;
+    var controlPosition = _opts.controlPosition;
 
     this.removeFromMap(this.search, controlPosition, mapref);
     (0, _utils.unregisterEvents)(this.registeredEvents);
@@ -244,7 +243,7 @@ this.on('unmount', this.onUnmount);
 },{}],12:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag('search-box', '<input type="text" name="search">', function(opts) {
+module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search">', function(opts) {
 this.mixin('SearchBoxMixin');
 this.on('mount', this.onMount);
 this.on('unmount', this.onUnmount);

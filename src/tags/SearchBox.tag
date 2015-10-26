@@ -1,5 +1,5 @@
 <search-box>
-  <input type="text" name="search" />
+  <input class="search-box-input" type="text" name="search" />
   
   <script type="es6">
     this.mixin('SearchBoxMixin');

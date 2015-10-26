@@ -10,11 +10,12 @@ export default function SearchBoxMixin() {
   };
   
   this.onMount = function () {
-    const {mapref, controlPosition} = this.opts;
+    const {controlposition} = this.opts;
+    const mapref = this.parent.map;
     const searchBoxOptions = composeOptions(SEARCH_BOX_OPTIONS, this.opts);
     this.searchBox = this.createSearchBox(this.search, searchBoxOptions);
     this.registeredEvents = registerEvents(searchBoxEvents, this.opts, this.searchBox);
-    this.addToMap(this.search, controlPosition, mapref);
+    this.addToMap(this.search, controlposition, mapref);
   };
   
   this.onUnmount = function () {
