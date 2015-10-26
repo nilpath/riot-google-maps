@@ -1,3 +1,4 @@
+import {default as equal} from 'equals';
 import {googleMapEvents} from '../events';
 import {composeOptions, registerEvents, unregisterEvents} from '../utils';
 
@@ -47,7 +48,7 @@ export default function GoogleMapMixin() {
       const prevOpt = this.prevOpts[optionName];
       const updater = updaters[optionName];
       
-      if(opt !== prevOpt && updater) {
+      if(equal(opt, prevOpt) && updater) {
         updater(opt, this);
       }
     });

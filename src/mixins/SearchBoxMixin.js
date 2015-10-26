@@ -1,3 +1,4 @@
+import {default as equal} from 'equals';
 import {searchBoxEvents} from '../events';
 import {composeOptions, registerEvents, unregisterEvents} from '../utils';
 
@@ -38,7 +39,7 @@ export default function SearchBoxMixin() {
       const prevOpt = this.prevOpts[optionName];
       const updater = updaters[optionName];
       
-      if(opt !== prevOpt && updater) {
+      if(equal(opt, prevOpt) && updater) {
         updater(opt, this);
       }
     });

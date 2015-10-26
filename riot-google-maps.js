@@ -1,4 +1,186 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var type = require('jkroso-type')
+
+// (any, any, [array]) -> boolean
+function equal(a, b, memos){
+  // All identical values are equivalent
+  if (a === b) return true
+  var fnA = types[type(a)]
+  var fnB = types[type(b)]
+  return fnA && fnA === fnB
+    ? fnA(a, b, memos)
+    : false
+}
+
+var types = {}
+
+// (Number) -> boolean
+types.number = function(a, b){
+  return a !== a && b !== b/*Nan check*/
+}
+
+// (function, function, array) -> boolean
+types['function'] = function(a, b, memos){
+  return a.toString() === b.toString()
+    // Functions can act as objects
+    && types.object(a, b, memos)
+    && equal(a.prototype, b.prototype)
+}
+
+// (date, date) -> boolean
+types.date = function(a, b){
+  return +a === +b
+}
+
+// (regexp, regexp) -> boolean
+types.regexp = function(a, b){
+  return a.toString() === b.toString()
+}
+
+// (DOMElement, DOMElement) -> boolean
+types.element = function(a, b){
+  return a.outerHTML === b.outerHTML
+}
+
+// (textnode, textnode) -> boolean
+types.textnode = function(a, b){
+  return a.textContent === b.textContent
+}
+
+// decorate `fn` to prevent it re-checking objects
+// (function) -> function
+function memoGaurd(fn){
+  return function(a, b, memos){
+    if (!memos) return fn(a, b, [])
+    var i = memos.length, memo
+    while (memo = memos[--i]) {
+      if (memo[0] === a && memo[1] === b) return true
+    }
+    return fn(a, b, memos)
+  }
+}
+
+types['arguments'] =
+types['bit-array'] =
+types.array = memoGaurd(arrayEqual)
+
+// (array, array, array) -> boolean
+function arrayEqual(a, b, memos){
+  var i = a.length
+  if (i !== b.length) return false
+  memos.push([a, b])
+  while (i--) {
+    if (!equal(a[i], b[i], memos)) return false
+  }
+  return true
+}
+
+types.object = memoGaurd(objectEqual)
+
+// (object, object, array) -> boolean
+function objectEqual(a, b, memos) {
+  if (typeof a.equal == 'function') {
+    memos.push([a, b])
+    return a.equal(b, memos)
+  }
+  var ka = getEnumerableProperties(a)
+  var kb = getEnumerableProperties(b)
+  var i = ka.length
+
+  // same number of properties
+  if (i !== kb.length) return false
+
+  // although not necessarily the same order
+  ka.sort()
+  kb.sort()
+
+  // cheap key test
+  while (i--) if (ka[i] !== kb[i]) return false
+
+  // remember
+  memos.push([a, b])
+
+  // iterate again this time doing a thorough check
+  i = ka.length
+  while (i--) {
+    var key = ka[i]
+    if (!equal(a[key], b[key], memos)) return false
+  }
+
+  return true
+}
+
+// (object) -> array
+function getEnumerableProperties (object) {
+  var result = []
+  for (var k in object) if (k !== 'constructor') {
+    result.push(k)
+  }
+  return result
+}
+
+module.exports = equal
+
+},{"jkroso-type":2}],2:[function(require,module,exports){
+var toString = {}.toString
+var DomNode = typeof window != 'undefined'
+  ? window.Node
+  : Function // could be any function
+
+/**
+ * Return the type of `val`.
+ *
+ * @param {Mixed} val
+ * @return {String}
+ * @api public
+ */
+
+module.exports = exports = function type(x){
+  var type = typeof x
+  if (type != 'object') return type
+  type = types[toString.call(x)]
+  if (type == 'object') {
+    // in case they have been polyfilled
+    if (x instanceof Map) return 'map'
+    if (x instanceof Set) return 'set'
+    return 'object'
+  }
+  if (type) return type
+  if (x instanceof DomNode) switch (x.nodeType) {
+    case 1:  return 'element'
+    case 3:  return 'text-node'
+    case 9:  return 'document'
+    case 11: return 'document-fragment'
+    default: return 'dom-node'
+  }
+}
+
+var types = exports.types = {
+  '[object Function]': 'function',
+  '[object Date]': 'date',
+  '[object RegExp]': 'regexp',
+  '[object Arguments]': 'arguments',
+  '[object Array]': 'array',
+  '[object Set]': 'set',
+  '[object String]': 'string',
+  '[object Null]': 'null',
+  '[object Undefined]': 'undefined',
+  '[object Number]': 'number',
+  '[object Boolean]': 'boolean',
+  '[object Object]': 'object',
+  '[object Map]': 'map',
+  '[object Text]': 'text-node',
+  '[object Uint8Array]': 'bit-array',
+  '[object Uint16Array]': 'bit-array',
+  '[object Uint32Array]': 'bit-array',
+  '[object Uint8ClampedArray]': 'bit-array',
+  '[object Error]': 'error',
+  '[object FormData]': 'form-data',
+  '[object File]': 'file',
+  '[object Blob]': 'blob'
+}
+
+},{}],3:[function(require,module,exports){
 /**
  * Code refactored from Mozilla Developer Network:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
@@ -46,7 +228,7 @@ module.exports = {
   polyfill: polyfill
 };
 
-},{}],2:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55,7 +237,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = ["bounds_changed", "center_changed", "click", "dblclick", "drag", "dragend", "dragstart", "heading_changed", "idle", "maptypeid_changed", "mousemove", "mouseout", "mouseover", "projection_changed", "resize", "rightclick", "tilesloaded", "tilt_changed", "zoom_changed"];
 module.exports = exports["default"];
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -64,7 +246,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = ["animation_changed", "click", "clickable_changed", "cursor_changed", "dblclick", "drag", "dragend", "draggable_changed", "dragstart", "flat_changed", "icon_changed", "mousedown", "mouseout", "mouseover", "mouseup", "position_changed", "rightclick", "shape_changed", "title_changed", "visible_changed", "zindex_changed"];
 module.exports = exports["default"];
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -73,7 +255,7 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = ["places_changed"];
 module.exports = exports["default"];
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -94,7 +276,7 @@ var _SearchBoxEventsJs = require('./SearchBoxEvents.js');
 
 exports.searchBoxEvents = _interopRequire(_SearchBoxEventsJs);
 
-},{"./GoogleMapEvents.js":2,"./MarkerEvents.js":3,"./SearchBoxEvents.js":4}],6:[function(require,module,exports){
+},{"./GoogleMapEvents.js":4,"./MarkerEvents.js":5,"./SearchBoxEvents.js":6}],8:[function(require,module,exports){
 'use strict';
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
@@ -118,13 +300,19 @@ riot.mixin('MarkerMixin', new _mixins.MarkerMixin());
 riot.mixin('SearchBoxMixin', new _mixins.SearchBoxMixin());
 riot.mixin('StateMixin', new _mixins.StateMixin());
 
-},{"./mixins":11,"./tags/GoogleMap.tag":12,"./tags/Marker.tag":13,"./tags/SearchBox.tag":14}],7:[function(require,module,exports){
+},{"./mixins":13,"./tags/GoogleMap.tag":14,"./tags/Marker.tag":15,"./tags/SearchBox.tag":16}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports['default'] = GoogleMapMixin;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _equals = require('equals');
+
+var _equals2 = _interopRequireDefault(_equals);
 
 var _events = require('../events');
 
@@ -184,7 +372,7 @@ function GoogleMapMixin() {
       var prevOpt = _this.prevOpts[optionName];
       var updater = updaters[optionName];
 
-      if (opt !== prevOpt && updater) {
+      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
         updater(opt, _this);
       }
     });
@@ -197,13 +385,19 @@ function GoogleMapMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":5,"../utils":16}],8:[function(require,module,exports){
+},{"../events":7,"../utils":18,"equals":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports['default'] = MarkerMixin;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _equals = require('equals');
+
+var _equals2 = _interopRequireDefault(_equals);
 
 var _events = require('../events');
 
@@ -289,7 +483,7 @@ function MarkerMixin() {
       var prevOpt = _this.prevOpts[optionName];
       var updater = updaters[optionName];
 
-      if (opt !== prevOpt && updater) {
+      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
         updater(opt, _this);
       }
     });
@@ -304,13 +498,19 @@ function MarkerMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":5,"../utils":16}],9:[function(require,module,exports){
+},{"../events":7,"../utils":18,"equals":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports['default'] = SearchBoxMixin;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _equals = require('equals');
+
+var _equals2 = _interopRequireDefault(_equals);
 
 var _events = require('../events');
 
@@ -361,7 +561,7 @@ function SearchBoxMixin() {
       var prevOpt = _this.prevOpts[optionName];
       var updater = updaters[optionName];
 
-      if (opt !== prevOpt && updater) {
+      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
         updater(opt, _this);
       }
     });
@@ -383,7 +583,7 @@ function SearchBoxMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":5,"../utils":16}],10:[function(require,module,exports){
+},{"../events":7,"../utils":18,"equals":1}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -406,7 +606,7 @@ function storeState() {
 }
 module.exports = exports['default'];
 
-},{"es6-object-assign":1}],11:[function(require,module,exports){
+},{"es6-object-assign":3}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -431,28 +631,28 @@ var _StateMixin = require('./StateMixin');
 
 exports.StateMixin = _interopRequire(_StateMixin);
 
-},{"./GoogleMapMixin":7,"./MarkerMixin":8,"./SearchBoxMixin":9,"./StateMixin":10}],12:[function(require,module,exports){
+},{"./GoogleMapMixin":9,"./MarkerMixin":10,"./SearchBoxMixin":11,"./StateMixin":12}],14:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('google-map', '<div name="mapelem"></div> <yield ></yield>', function(opts) {
 this.mixin('GoogleMapMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('marker', '<yield ></yield>', function(opts) {
 this.mixin('MarkerMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search">', function(opts) {
 this.mixin('SearchBoxMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -484,7 +684,7 @@ function composeOptions(optionNames, opts) {
 
 module.exports = exports["default"];
 
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -505,7 +705,7 @@ var _composeOptionsJs = require('./composeOptions.js');
 
 exports.composeOptions = _interopRequire(_composeOptionsJs);
 
-},{"./composeOptions.js":15,"./registerEvents.js":17,"./unregisterEvents.js":18}],17:[function(require,module,exports){
+},{"./composeOptions.js":17,"./registerEvents.js":19,"./unregisterEvents.js":20}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -530,7 +730,7 @@ function registerEvents(eventList, handlers, instance) {
 
 module.exports = exports["default"];
 
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -547,4 +747,4 @@ function unregisterEvents(registeredEvents) {
 
 module.exports = exports["default"];
 
-},{}]},{},[6]);
+},{}]},{},[8]);
