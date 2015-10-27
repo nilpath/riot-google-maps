@@ -624,11 +624,7 @@ function applyUpdaters(opts, prevOpts, updaters, tag) {
     var prevOpt = prevOpts[updaterName];
     var updater = updaters[updaterName];
 
-    if (updaterName === 'center') {
-      console.log(updaterName, opt, prevOpt, !(0, _equals2['default'])(opt, prevOpt));
-    }
-
-    if (!(0, _equals2['default'])(opt, prevOpt) && updater) {
+    if (!(0, _equals2['default'])(opt, prevOpt)) {
       updater(opt, tag);
     }
   });
