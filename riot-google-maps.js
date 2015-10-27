@@ -312,7 +312,7 @@ var _events = require('../events');
 
 var _utils = require('../utils');
 
-var MAP_OPTIONS = ['center', 'heading', 'mapTypeId', 'options', 'streetview', 'tilt', 'zoom'];
+var MAP_OPTIONS = ['center', 'heading', 'maptypeid', 'options', 'streetview', 'tilt', 'zoom'];
 
 var updaters = {
   center: function center(_center, tag) {
@@ -321,8 +321,8 @@ var updaters = {
   heading: function heading(_heading, tag) {
     tag.map.setHeading(_heading);
   },
-  mapTypeId: function mapTypeId(_mapTypeId, tag) {
-    tag.map.setMapTypeId(_mapTypeId);
+  maptypeid: function maptypeid(mapTypeId, tag) {
+    tag.map.setMapTypeId(mapTypeId);
   },
   options: function options(_options, tag) {
     tag.map.setOptions(_options);
@@ -381,7 +381,7 @@ var _events = require('../events');
 
 var _utils = require('../utils');
 
-var MARKER_OPTIONS = ['animation', 'attribution', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity', 'options', 'place', 'position', 'shape', 'title', 'visible', 'zIndex'];
+var MARKER_OPTIONS = ['animation', 'attribution', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity', 'options', 'place', 'position', 'shape', 'title', 'visible', 'zindex'];
 
 var updaters = {
   animation: function animation(_animation, tag) {

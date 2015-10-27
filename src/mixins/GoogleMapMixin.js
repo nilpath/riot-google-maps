@@ -9,7 +9,7 @@ import {
 const MAP_OPTIONS = [
   'center', 
   'heading', 
-  'mapTypeId',
+  'maptypeid',
   'options', 
   'streetview', 
   'tilt',
@@ -19,7 +19,7 @@ const MAP_OPTIONS = [
 const updaters = {
   center      (center, tag) { tag.map.setCenter(center); },
   heading     (heading, tag) { tag.map.setHeading(heading); },
-  mapTypeId   (mapTypeId, tag) { tag.map.setMapTypeId(mapTypeId); },
+  maptypeid   (mapTypeId, tag) { tag.map.setMapTypeId(mapTypeId); },
   options     (options, tag) { tag.map.setOptions(options); },
   streetView  (streetView, tag) { tag.map.setStreetView(streetView); },
   tilt        (tilt, tag) { tag.map.setTilt(tilt); },

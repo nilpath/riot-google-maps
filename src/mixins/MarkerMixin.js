@@ -21,7 +21,7 @@ const MARKER_OPTIONS = [
   'shape', 
   'title', 
   'visible',
-  'zIndex'
+  'zindex'
 ];
 
 const updaters = {
