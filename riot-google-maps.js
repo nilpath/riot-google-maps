@@ -314,7 +314,7 @@ var _utils = require('../utils');
 
 var MAP_OPTIONS = ['center', 'heading', 'maptypeid', 'options', 'streetview', 'tilt', 'zoom'];
 
-var updaters = {
+var googleMapUpdaters = {
   center: function center(_center, tag) {
     tag.map.setCenter(_center);
   },
@@ -327,8 +327,8 @@ var updaters = {
   options: function options(_options, tag) {
     tag.map.setOptions(_options);
   },
-  streetView: function streetView(_streetView, tag) {
-    tag.map.setStreetView(_streetView);
+  streetview: function streetview(streetView, tag) {
+    tag.map.setStreetView(streetView);
   },
   tilt: function tilt(_tilt, tag) {
     tag.map.setTilt(_tilt);
@@ -337,6 +337,8 @@ var updaters = {
     tag.map.setZoom(_zoom);
   }
 };
+
+exports.googleMapUpdaters = googleMapUpdaters;
 
 function GoogleMapMixin() {
 
@@ -359,15 +361,13 @@ function GoogleMapMixin() {
 
   this.onUpdate = function () {
     if (!this.map) return;
-    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, googleMapUpdaters, this);
   };
 
   this.createMap = function (elem, options) {
     return new google.maps.Map(elem, options);
   };
 }
-
-module.exports = exports['default'];
 
 },{"../events":7,"../utils":19}],10:[function(require,module,exports){
 'use strict';
