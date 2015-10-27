@@ -10,5 +10,5 @@ export default function StateMixin() {
 }
 
 function storeState() {
-  this.tagState = assign({}, this.opts);
+  this.prevOpts = assign({}, this.opts);
 }

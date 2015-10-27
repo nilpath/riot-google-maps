@@ -554,7 +554,7 @@ function StateMixin() {
 }
 
 function storeState() {
-  this.tagState = (0, _es6ObjectAssign.assign)({}, this.opts);
+  this.prevOpts = (0, _es6ObjectAssign.assign)({}, this.opts);
 }
 module.exports = exports['default'];
 
@@ -624,7 +624,11 @@ function applyUpdaters(opts, prevOpts, updaters, tag) {
     var prevOpt = prevOpts[updaterName];
     var updater = updaters[updaterName];
 
-    if ((0, _equals2['default'])(opt, prevOpt) && updater) {
+    if (updaterName === 'center') {
+      console.log(updaterName, opt, prevOpt, !(0, _equals2['default'])(opt, prevOpt));
+    }
+
+    if (!(0, _equals2['default'])(opt, prevOpt) && updater) {
       updater(opt, tag);
     }
   });

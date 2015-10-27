@@ -6,7 +6,11 @@ export default function applyUpdaters(opts, prevOpts, updaters, tag) {
     const prevOpt = prevOpts[updaterName];
     const updater = updaters[updaterName];
     
-    if(equals(opt, prevOpt) && updater) {
+    if(updaterName === 'center') {
+      console.log(updaterName, opt, prevOpt, !equals(opt, prevOpt));
+    }
+    
+    if(!equals(opt, prevOpt) && updater) {
       updater(opt, tag);
     }
   });
