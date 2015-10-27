@@ -16,12 +16,12 @@ const MAP_OPTIONS = [
   'zoom'
 ];
 
-const updaters = {
+export const googleMapUpdaters = {
   center      (center, tag) { tag.map.setCenter(center); },
   heading     (heading, tag) { tag.map.setHeading(heading); },
   maptypeid   (mapTypeId, tag) { tag.map.setMapTypeId(mapTypeId); },
   options     (options, tag) { tag.map.setOptions(options); },
-  streetView  (streetView, tag) { tag.map.setStreetView(streetView); },
+  streetview  (streetView, tag) { tag.map.setStreetView(streetView); },
   tilt        (tilt, tag) { tag.map.setTilt(tilt); },
   zoom        (zoom, tag) { tag.map.setZoom(zoom); }
 };
@@ -47,7 +47,7 @@ export default function GoogleMapMixin() {
   
   this.onUpdate = function () {
     if(!this.map) return;
-    applyUpdaters(this.opts, this.prevOpts, updaters, this);
+    applyUpdaters(this.opts, this.prevOpts, googleMapUpdaters, this);
   };
   
   this.createMap = function (elem, options) {

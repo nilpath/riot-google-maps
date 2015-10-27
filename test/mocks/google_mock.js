@@ -2,6 +2,16 @@ let MarkerMock = {
   setMap: function() {}
 };
 
+let MapMock = {
+  setCenter: function() {},
+  setHeading: function() {},
+  setMapTypeId: function() {},
+  setOptions: function() {},
+  setStreetView: function() {},
+  setTilt: function() {},
+  setZoom: function() {}
+};
+
 let googleApi = {
   maps: {
     event: {
@@ -11,7 +21,7 @@ let googleApi = {
     places: {
       SearchBox: sinon.stub()
     },
-    Map: sinon.stub(),
+    Map: sinon.stub().returns(MapMock),
     Marker: sinon.stub().returns(MarkerMock)
   }
 };

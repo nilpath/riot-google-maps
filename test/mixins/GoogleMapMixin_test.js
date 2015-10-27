@@ -1,4 +1,4 @@
-import {default as GoogleMapMixin} from '../../src/mixins/GoogleMapMixin';
+import {default as GoogleMapMixin, googleMapUpdaters} from '../../src/mixins/GoogleMapMixin';
 import {googleMapEvents} from '../../src/events';
 
 describe('GoogleMapMixin: ', () => {
@@ -75,6 +75,50 @@ describe('GoogleMapMixin: ', () => {
     
   });
   
+  describe('#onUpdate', () => {
+    let mixin;
+    const updaterNames = Object.keys(googleMapUpdaters);
+    const updaterSpies = updaterNames.map(name => sinon.spy(googleMapUpdaters, name));
+    
+    beforeEach(() => {
+      
+      mixin = new GoogleMapMixin();
+      
+      mixin.map = new window.google.maps.Map();
+      
+      mixin.prevOpts = updaterNames.reduce((acc, name) => {
+        acc[name] = 10;
+        return acc;
+      }, {});
+      
+      mixin.opts = updaterNames.reduce((acc, name) => {
+        acc[name] = 12;
+        return acc;
+      }, {});
+      
+    });
+    
+    afterEach(() => {
+      updaterSpies.forEach(spy => spy.reset());
+    });
+    
+    it('do noting if the map instance is missing', () => {
+      mixin.map = undefined;
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).not.to.be(true);
+      });
+    });
+    
+    it('should call updater if values changed', () => {
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).to.be(true);
+      });
+    });
+    
+  });
+  
   describe('#createMap', () => {
     var mixin;
     
@@ -93,6 +137,59 @@ describe('GoogleMapMixin: ', () => {
       expect(mapInstance).not.to.be(undefined);
     });
     
+  });
+  
+});
+
+describe('GoogleMapUpdaters: ', () => {
+  
+  let map, tag;
+  
+  beforeEach(() => {
+    map = new window.google.maps.Map();
+    tag = {map};
+  });
+  
+  it('center updater should call setCenter on mapInstance', () => {
+    const spy = sinon.spy(map, 'setCenter');
+    googleMapUpdaters.center('value', tag);
+    expect(map.setCenter.calledWith('value')).to.be(true);
+  });
+  
+  it('heading updater should call setCenter on mapInstance', () => {
+    const spy = sinon.spy(map, 'setHeading');
+    googleMapUpdaters.heading('value', tag);
+    expect(map.setHeading.calledWith('value')).to.be(true);
+  });
+  
+  it('maptypeid updater should call setCenter on mapInstance', () => {
+    const spy = sinon.spy(map, 'setMapTypeId');
+    googleMapUpdaters.maptypeid('value', tag);
+    expect(map.setMapTypeId.calledWith('value')).to.be(true);
+  });
+  
+  it('options updater should call setCenter on mapInstance', () => {
+    const spy = sinon.spy(map, 'setOptions');
+    googleMapUpdaters.options({}, tag);
+    expect(map.setOptions.calledWith({})).to.be(true);
+  });
+  
+  it('streetview updater should call setStreetView on mapInstance', () => {
+    const spy = sinon.spy(map, 'setStreetView');
+    googleMapUpdaters.streetview('value', tag);
+    expect(map.setStreetView.calledWith('value')).to.be(true);
+  });
+  
+  it('tilt updater should call setCenter on mapInstance', () => {
+    const spy = sinon.spy(map, 'setTilt');
+    googleMapUpdaters.tilt('value', tag);
+    expect(map.setTilt.calledWith('value')).to.be(true);
+  });
+  
+  it('zoom updater should call setZoom on mapInstance', () => {
+    const spy = sinon.spy(map, 'setZoom');
+    googleMapUpdaters.zoom('value', tag);
+    expect(map.setZoom.calledWith('value')).to.be(true);
   });
   
 });
