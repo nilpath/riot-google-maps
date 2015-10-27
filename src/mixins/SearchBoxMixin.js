@@ -1,6 +1,10 @@
-import {default as equal} from 'equals';
 import {searchBoxEvents} from '../events';
-import {composeOptions, registerEvents, unregisterEvents} from '../utils';
+import {
+  composeOptions, 
+  registerEvents, 
+  unregisterEvents, 
+  applyUpdaters
+} from '../utils';
 
 const SEARCH_BOX_OPTIONS = ['bounds'];
 
@@ -34,15 +38,7 @@ export default function SearchBoxMixin() {
   
   this.onUpdate = function () {
     if(!this.searchBox) return;
-    Object.keys(this.opts).forEach((optionName) => {
-      const opt = this.opts[optionName];
-      const prevOpt = this.prevOpts[optionName];
-      const updater = updaters[optionName];
-      
-      if(equal(opt, prevOpt) && updater) {
-        updater(opt, this);
-      }
-    });
+    applyUpdaters(this.opts, this.prevOpts, updaters, this);
   };
   
   this.createSearchBox = function (searchInput, options) {

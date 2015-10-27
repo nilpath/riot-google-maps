@@ -1,6 +1,10 @@
-import {default as equal} from 'equals';
 import {googleMapEvents} from '../events';
-import {composeOptions, registerEvents, unregisterEvents} from '../utils';
+import {
+  composeOptions, 
+  registerEvents, 
+  unregisterEvents, 
+  applyUpdaters
+} from '../utils';
 
 const MAP_OPTIONS = [
   'center', 
@@ -43,15 +47,7 @@ export default function GoogleMapMixin() {
   
   this.onUpdate = function () {
     if(!this.map) return;
-    Object.keys(this.opts).forEach((optionName) => {
-      const opt = this.opts[optionName];
-      const prevOpt = this.prevOpts[optionName];
-      const updater = updaters[optionName];
-      
-      if(equal(opt, prevOpt) && updater) {
-        updater(opt, this);
-      }
-    });
+    applyUpdaters(this.opts, this.prevOpts, updaters, this);
   };
   
   this.createMap = function (elem, options) {

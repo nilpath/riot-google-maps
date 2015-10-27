@@ -308,12 +308,6 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = GoogleMapMixin;
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _equals = require('equals');
-
-var _equals2 = _interopRequireDefault(_equals);
-
 var _events = require('../events');
 
 var _utils = require('../utils');
@@ -364,18 +358,8 @@ function GoogleMapMixin() {
   };
 
   this.onUpdate = function () {
-    var _this = this;
-
     if (!this.map) return;
-    Object.keys(this.opts).forEach(function (optionName) {
-      var opt = _this.opts[optionName];
-      var prevOpt = _this.prevOpts[optionName];
-      var updater = updaters[optionName];
-
-      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
-        updater(opt, _this);
-      }
-    });
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
   };
 
   this.createMap = function (elem, options) {
@@ -385,19 +369,13 @@ function GoogleMapMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":7,"../utils":18,"equals":1}],10:[function(require,module,exports){
+},{"../events":7,"../utils":19}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports['default'] = MarkerMixin;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _equals = require('equals');
-
-var _equals2 = _interopRequireDefault(_equals);
 
 var _events = require('../events');
 
@@ -475,18 +453,8 @@ function MarkerMixin() {
   };
 
   this.onUpdate = function () {
-    var _this = this;
-
     if (!this.marker) return;
-    Object.keys(this.opts).forEach(function (optionName) {
-      var opt = _this.opts[optionName];
-      var prevOpt = _this.prevOpts[optionName];
-      var updater = updaters[optionName];
-
-      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
-        updater(opt, _this);
-      }
-    });
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
   };
 
   this.createMarker = function (mapInstance, options) {
@@ -498,19 +466,13 @@ function MarkerMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":7,"../utils":18,"equals":1}],11:[function(require,module,exports){
+},{"../events":7,"../utils":19}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports['default'] = SearchBoxMixin;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _equals = require('equals');
-
-var _equals2 = _interopRequireDefault(_equals);
 
 var _events = require('../events');
 
@@ -553,18 +515,8 @@ function SearchBoxMixin() {
   };
 
   this.onUpdate = function () {
-    var _this = this;
-
     if (!this.searchBox) return;
-    Object.keys(this.opts).forEach(function (optionName) {
-      var opt = _this.opts[optionName];
-      var prevOpt = _this.prevOpts[optionName];
-      var updater = updaters[optionName];
-
-      if ((0, _equals2['default'])(opt, prevOpt) && updater) {
-        updater(opt, _this);
-      }
-    });
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
   };
 
   this.createSearchBox = function (searchInput, options) {
@@ -583,7 +535,7 @@ function SearchBoxMixin() {
 
 module.exports = exports['default'];
 
-},{"../events":7,"../utils":18,"equals":1}],12:[function(require,module,exports){
+},{"../events":7,"../utils":19}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -653,6 +605,34 @@ this.mixin('SearchBoxMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = applyUpdaters;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _equals = require('equals');
+
+var _equals2 = _interopRequireDefault(_equals);
+
+function applyUpdaters(opts, prevOpts, updaters, tag) {
+  Object.keys(updaters).forEach(function (updaterName) {
+    var opt = opts[updaterName];
+    var prevOpt = prevOpts[updaterName];
+    var updater = updaters[updaterName];
+
+    if ((0, _equals2['default'])(opt, prevOpt) && updater) {
+      updater(opt, tag);
+    }
+  });
+}
+
+module.exports = exports['default'];
+
+},{"equals":1}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -684,7 +664,7 @@ function composeOptions(optionNames, opts) {
 
 module.exports = exports["default"];
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -693,19 +673,23 @@ Object.defineProperty(exports, '__esModule', {
 
 function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
-var _registerEventsJs = require('./registerEvents.js');
+var _registerEvents = require('./registerEvents');
 
-exports.registerEvents = _interopRequire(_registerEventsJs);
+exports.registerEvents = _interopRequire(_registerEvents);
 
-var _unregisterEventsJs = require('./unregisterEvents.js');
+var _unregisterEvents = require('./unregisterEvents');
 
-exports.unregisterEvents = _interopRequire(_unregisterEventsJs);
+exports.unregisterEvents = _interopRequire(_unregisterEvents);
 
-var _composeOptionsJs = require('./composeOptions.js');
+var _composeOptions = require('./composeOptions');
 
-exports.composeOptions = _interopRequire(_composeOptionsJs);
+exports.composeOptions = _interopRequire(_composeOptions);
 
-},{"./composeOptions.js":17,"./registerEvents.js":19,"./unregisterEvents.js":20}],19:[function(require,module,exports){
+var _applyUpdaters = require('./applyUpdaters');
+
+exports.applyUpdaters = _interopRequire(_applyUpdaters);
+
+},{"./applyUpdaters":17,"./composeOptions":18,"./registerEvents":20,"./unregisterEvents":21}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -730,7 +714,7 @@ function registerEvents(eventList, handlers, instance) {
 
 module.exports = exports["default"];
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
