@@ -1,5 +1,20 @@
 let MarkerMock = {
-  setMap: function() {}
+  setMap: function() {},
+  setAnimation: function() {},
+  setAttribution: function() {},
+  setClickable: function() {},
+  setCursor: function() {},
+  setDraggable: function() {},
+  setIcon: function() {},
+  setLabel: function() {},
+  setOpacity: function() {},
+  setOptions: function() {},
+  setPlace: function() {},
+  setPosition: function() {},
+  setShape: function() {},
+  setTitle: function() {},
+  setVisible: function() {},
+  setZIndex: function() {}
 };
 
 let MapMock = {

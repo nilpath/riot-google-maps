@@ -1,4 +1,4 @@
-import {default as MarkerMixin} from '../../src/mixins/MarkerMixin';
+import {default as MarkerMixin, markerUpdaters} from '../../src/mixins/MarkerMixin';
 import {markerEvents} from '../../src/events';
 
 describe('MarkerMixin: ', () => {
@@ -100,6 +100,101 @@ describe('MarkerMixin: ', () => {
       expect(markerInstance).not.to.be(undefined);
     });
     
+  });
+  
+});
+
+describe('MarkerUpdaters: ', () => {
+  
+  let marker, tag;
+  
+  beforeEach(() => {
+    marker = new window.google.maps.Marker();
+    tag = {marker};
+  });
+  
+  it('animation updater should call setAnimation on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setAnimation');
+    markerUpdaters.animation('value', tag);
+    expect(marker.setAnimation.calledWith('value')).to.be(true);
+  });
+  
+  it('attribution updater should call setAttribution on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setAttribution');
+    markerUpdaters.attribution('value', tag);
+    expect(marker.setAttribution.calledWith('value')).to.be(true);
+  });
+  
+  it('clickable updater should call setClickable on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setClickable');
+    markerUpdaters.clickable('value', tag);
+    expect(marker.setClickable.calledWith('value')).to.be(true);
+  });
+  
+  it('cursor updater should call setCursor on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setCursor');
+    markerUpdaters.cursor({}, tag);
+    expect(marker.setCursor.calledWith({})).to.be(true);
+  });
+  
+  it('draggable updater should call setDraggable on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setDraggable');
+    markerUpdaters.draggable('value', tag);
+    expect(marker.setDraggable.calledWith('value')).to.be(true);
+  });
+  
+  it('icon updater should call setIcon on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setIcon');
+    markerUpdaters.icon('value', tag);
+    expect(marker.setIcon.calledWith('value')).to.be(true);
+  });
+  
+  it('label updater should call setLabel on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setLabel');
+    markerUpdaters.label('value', tag);
+    expect(marker.setLabel.calledWith('value')).to.be(true);
+  });
+  
+  it('opacity updater should call setOpacity on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setOpacity');
+    markerUpdaters.opacity('value', tag);
+    expect(marker.setOpacity.calledWith('value')).to.be(true);
+  });
+  
+  it('options updater should call setOptions on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setOptions');
+    markerUpdaters.options('value', tag);
+    expect(marker.setOptions.calledWith('value')).to.be(true);
+  });
+  
+  it('place updater should call setPlace on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setPlace');
+    markerUpdaters.place('value', tag);
+    expect(marker.setPlace.calledWith('value')).to.be(true);
+  });
+  
+  it('position updater should call setPosition on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setPosition');
+    markerUpdaters.position('value', tag);
+    expect(marker.setPosition.calledWith('value')).to.be(true);
+  });
+  
+  it('shape updater should call setShape on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setShape');
+    markerUpdaters.shape('value', tag);
+    expect(marker.setShape.calledWith('value')).to.be(true);
+  });
+  
+  it('title updater should call setTitle on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setTitle');
+    markerUpdaters.title('value', tag);
+    expect(marker.setTitle.calledWith('value')).to.be(true);
+  });
+  
+  it('zindex updater should call setZIndex on markerInstance', () => {
+    const spy = sinon.spy(marker, 'setZIndex');
+    markerUpdaters.zindex('value', tag);
+    expect(marker.setZIndex.calledWith('value')).to.be(true);
   });
   
 });

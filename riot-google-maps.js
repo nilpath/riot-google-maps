@@ -383,7 +383,7 @@ var _utils = require('../utils');
 
 var MARKER_OPTIONS = ['animation', 'attribution', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity', 'options', 'place', 'position', 'shape', 'title', 'visible', 'zindex'];
 
-var updaters = {
+var markerUpdaters = {
   animation: function animation(_animation, tag) {
     tag.marker.setAnimation(_animation);
   },
@@ -426,10 +426,12 @@ var updaters = {
   visible: function visible(_visible, tag) {
     tag.marker.setVisible(_visible);
   },
-  zIndex: function zIndex(_zIndex, tag) {
-    tag.marker.setZIndex(_zIndex);
+  zindex: function zindex(zIndex, tag) {
+    tag.marker.setZIndex(zIndex);
   }
 };
+
+exports.markerUpdaters = markerUpdaters;
 
 function MarkerMixin() {
 
@@ -463,8 +465,6 @@ function MarkerMixin() {
     return marker;
   };
 }
-
-module.exports = exports['default'];
 
 },{"../events":7,"../utils":19}],11:[function(require,module,exports){
 'use strict';

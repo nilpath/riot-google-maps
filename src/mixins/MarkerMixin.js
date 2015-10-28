@@ -24,7 +24,7 @@ const MARKER_OPTIONS = [
   'zindex'
 ];
 
-const updaters = {
+export const markerUpdaters = {
   animation   (animation, tag) { tag.marker.setAnimation(animation); },
   attribution (attribution, tag) { tag.marker.setAttribution(attribution); },
   clickable   (clickable, tag) { tag.marker.setClickable(clickable); },
@@ -39,7 +39,7 @@ const updaters = {
   shape       (shape, tag) { tag.marker.setShape(shape); },
   title       (title, tag) { tag.marker.setTitle(title); },
   visible     (visible, tag) { tag.marker.setVisible(visible); },
-  zIndex      (zIndex, tag) { tag.marker.setZIndex(zIndex); }
+  zindex      (zIndex, tag) { tag.marker.setZIndex(zIndex); }
 };
 
 export default function MarkerMixin() {
