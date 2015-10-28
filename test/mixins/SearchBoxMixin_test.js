@@ -1,4 +1,4 @@
-import {default as SearchBoxMixin} from '../../src/mixins/SearchBoxMixin';
+import {default as SearchBoxMixin, searchBoxUpdaters} from '../../src/mixins/SearchBoxMixin';
 import {searchBoxEvents} from '../../src/events';
 
 describe('SearchBoxMixin: ', () => {
@@ -102,6 +102,47 @@ describe('SearchBoxMixin: ', () => {
     
   });
   
+  describe('#onUpdate', () => {
+    let mixin;
+    const updaterNames = Object.keys(searchBoxUpdaters);
+    const updaterSpies = updaterNames.map(name => sinon.spy(searchBoxUpdaters, name));
+    
+    beforeEach(() => {
+      mixin = new SearchBoxMixin();
+      mixin.searchBox = new window.google.maps.places.SearchBox();
+      
+      mixin.prevOpts = updaterNames.reduce((acc, name) => {
+        acc[name] = 10;
+        return acc;
+      }, {});
+      
+      mixin.opts = updaterNames.reduce((acc, name) => {
+        acc[name] = 12;
+        return acc;
+      }, {});
+      
+    });
+    
+    afterEach(() => {
+      updaterSpies.forEach(spy => spy.reset());
+    });
+    
+    it('do nothing if the marker instance is missing', () => {
+      mixin.searchBox = undefined;
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).not.to.be(true);
+      });
+    });
+    
+    it('should call updater if values changed', () => {
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).to.be(true);
+      });
+    });
+  });
+  
   describe('#createSearchBox', () => {
     var mixin;
     
@@ -180,4 +221,21 @@ describe('SearchBoxMixin: ', () => {
     });
     
   });
+});
+
+describe('SearchBoxUpdaters: ', () => {
+  
+  let searchBox, tag;
+  
+  beforeEach(() => {
+    searchBox = new window.google.maps.places.SearchBox();
+    tag = {searchBox};
+  });
+  
+  it('bounds updater should call setBounds on searchBoxInstance', () => {
+    const spy = sinon.spy(searchBox, 'setBounds');
+    searchBoxUpdaters.bounds('value', tag);
+    expect(searchBox.setBounds.calledWith('value')).to.be(true);
+  });
+  
 });

@@ -480,11 +480,13 @@ var _utils = require('../utils');
 
 var SEARCH_BOX_OPTIONS = ['bounds'];
 
-var updaters = {
+var searchBoxUpdaters = {
   bounds: function bounds(_bounds, tag) {
     tag.searchBox.setBounds(_bounds);
   }
 };
+
+exports.searchBoxUpdaters = searchBoxUpdaters;
 
 function SearchBoxMixin() {
 
@@ -516,7 +518,7 @@ function SearchBoxMixin() {
 
   this.onUpdate = function () {
     if (!this.searchBox) return;
-    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, searchBoxUpdaters, this);
   };
 
   this.createSearchBox = function (searchInput, options) {
@@ -532,8 +534,6 @@ function SearchBoxMixin() {
     mapInstance.controls[controlPosition].removeAt(index);
   };
 }
-
-module.exports = exports['default'];
 
 },{"../events":7,"../utils":19}],12:[function(require,module,exports){
 'use strict';

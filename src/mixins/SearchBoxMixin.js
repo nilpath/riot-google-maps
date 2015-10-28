@@ -8,7 +8,7 @@ import {
 
 const SEARCH_BOX_OPTIONS = ['bounds'];
 
-const updaters = {
+export const searchBoxUpdaters = {
   bounds(bounds, tag) { tag.searchBox.setBounds(bounds); }
 };
 
@@ -38,7 +38,7 @@ export default function SearchBoxMixin() {
   
   this.onUpdate = function () {
     if(!this.searchBox) return;
-    applyUpdaters(this.opts, this.prevOpts, updaters, this);
+    applyUpdaters(this.opts, this.prevOpts, searchBoxUpdaters, this);
   };
   
   this.createSearchBox = function (searchInput, options) {

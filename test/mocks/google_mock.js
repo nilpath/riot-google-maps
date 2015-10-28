@@ -27,6 +27,10 @@ let MapMock = {
   setZoom: function() {}
 };
 
+let SearchBoxMock = {
+  setBounds: function() {}
+};
+
 let googleApi = {
   maps: {
     event: {
@@ -34,7 +38,7 @@ let googleApi = {
       removeListener: sinon.stub()
     },
     places: {
-      SearchBox: sinon.stub()
+      SearchBox: sinon.stub().returns(SearchBoxMock)
     },
     Map: sinon.stub().returns(MapMock),
     Marker: sinon.stub().returns(MarkerMock)
