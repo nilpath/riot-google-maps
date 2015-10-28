@@ -547,15 +547,16 @@ var _es6ObjectAssign = require('es6-object-assign');
 
 function StateMixin() {
 
+  function storeState() {
+    this.prevOpts = (0, _es6ObjectAssign.assign)({}, this.opts);
+  }
+
   this.init = function () {
     this.prevOpts = {};
     this.on('updated', storeState.bind(this));
   };
 }
 
-function storeState() {
-  this.prevOpts = (0, _es6ObjectAssign.assign)({}, this.opts);
-}
 module.exports = exports['default'];
 
 },{"es6-object-assign":3}],13:[function(require,module,exports){

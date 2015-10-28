@@ -51,4 +51,13 @@ describe('GoogleMap Tag: ', () => {
     expect(mixinStub.onUpdate.called).to.be(true);
   });
   
+  it('should update prevOpts when updated', () => {
+    tag = riot.mount('google-map')[0];
+    tag.opts = {key: 'value'};
+    expect(tag.prevOpts).to.eql({});
+    
+    tag.update();
+    expect(tag.prevOpts).to.eql(tag.opts);
+  });
+  
 });
