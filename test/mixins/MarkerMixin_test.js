@@ -82,6 +82,49 @@ describe('MarkerMixin: ', () => {
     
   });
   
+  describe('#onUpdate', () => {
+    let mixin;
+    const updaterNames = Object.keys(markerUpdaters);
+    const updaterSpies = updaterNames.map(name => sinon.spy(markerUpdaters, name));
+    
+    beforeEach(() => {
+      
+      mixin = new MarkerMixin();
+      
+      mixin.marker = new window.google.maps.Marker();
+      
+      mixin.prevOpts = updaterNames.reduce((acc, name) => {
+        acc[name] = 10;
+        return acc;
+      }, {});
+      
+      mixin.opts = updaterNames.reduce((acc, name) => {
+        acc[name] = 12;
+        return acc;
+      }, {});
+      
+    });
+    
+    afterEach(() => {
+      updaterSpies.forEach(spy => spy.reset());
+    });
+    
+    it('do nothing if the marker instance is missing', () => {
+      mixin.marker = undefined;
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).not.to.be(true);
+      });
+    });
+    
+    it('should call updater if values changed', () => {
+      mixin.onUpdate();
+      updaterSpies.forEach(spy => {
+        expect(spy.called).to.be(true);
+      });
+    });
+  });
+  
   describe('#createMarker', () => {
     var mixin;
     

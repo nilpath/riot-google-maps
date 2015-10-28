@@ -65,7 +65,7 @@ export default function MarkerMixin() {
   
   this.onUpdate = function () {
     if(!this.marker) return;
-    applyUpdaters(this.opts, this.prevOpts, updaters, this);
+    applyUpdaters(this.opts, this.prevOpts, markerUpdaters, this);
   };
   
   this.createMarker = function (mapInstance, options) {

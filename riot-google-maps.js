@@ -456,7 +456,7 @@ function MarkerMixin() {
 
   this.onUpdate = function () {
     if (!this.marker) return;
-    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, updaters, this);
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, markerUpdaters, this);
   };
 
   this.createMarker = function (mapInstance, options) {
