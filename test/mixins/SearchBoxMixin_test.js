@@ -70,9 +70,9 @@ describe('SearchBoxMixin: ', () => {
       mixin = new SearchBoxMixin();
       mixin.registeredEvents = ['list', 'of', 'registered', 'events'];
       mixin.search = '<input name="search" />';
+      mixin.parent = {map};
       mixin.opts = { 
-        controlPosition: 0,
-        mapref: map 
+        controlPosition: 0
       };
       
       sinon.stub(mixin, 'removeFromMap');
@@ -127,7 +127,7 @@ describe('SearchBoxMixin: ', () => {
       updaterSpies.forEach(spy => spy.reset());
     });
     
-    it('do nothing if the marker instance is missing', () => {
+    it('do nothing if the searchBox instance is missing', () => {
       mixin.searchBox = undefined;
       mixin.onUpdate();
       updaterSpies.forEach(spy => {

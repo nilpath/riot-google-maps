@@ -1,7 +1,9 @@
 import {
   GoogleMapMixin,
   MarkerMixin,
-  SearchBoxMixin
+  SearchBoxMixin,
+  DirectionsRendererMixin,
+  StateMixin
 } from '../../src/mixins';
 
 describe('mixins: ', () => {
@@ -16,6 +18,14 @@ describe('mixins: ', () => {
   
   it('should export SearchBoxMixin', () => {
     expect(SearchBoxMixin).to.be.a('function');
+  });
+  
+  it('should export DirectionsRendererMixin', () => {
+    expect(DirectionsRendererMixin).to.be.a('function');
+  });
+  
+  it('should export StateMixin', () => {
+    expect(StateMixin).to.be.a('function');
   });
   
 });

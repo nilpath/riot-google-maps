@@ -1,34 +1,42 @@
 let MarkerMock = {
-  setMap: function() {},
-  setAnimation: function() {},
-  setAttribution: function() {},
-  setClickable: function() {},
-  setCursor: function() {},
-  setDraggable: function() {},
-  setIcon: function() {},
-  setLabel: function() {},
-  setOpacity: function() {},
-  setOptions: function() {},
-  setPlace: function() {},
-  setPosition: function() {},
-  setShape: function() {},
-  setTitle: function() {},
-  setVisible: function() {},
-  setZIndex: function() {}
+  setMap() {},
+  setAnimation() {},
+  setAttribution() {},
+  setClickable() {},
+  setCursor() {},
+  setDraggable() {},
+  setIcon() {},
+  setLabel() {},
+  setOpacity() {},
+  setOptions() {},
+  setPlace() {},
+  setPosition() {},
+  setShape() {},
+  setTitle() {},
+  setVisible() {},
+  setZIndex() {}
 };
 
 let MapMock = {
-  setCenter: function() {},
-  setHeading: function() {},
-  setMapTypeId: function() {},
-  setOptions: function() {},
-  setStreetView: function() {},
-  setTilt: function() {},
-  setZoom: function() {}
+  setCenter() {},
+  setHeading() {},
+  setMapTypeId() {},
+  setOptions() {},
+  setStreetView() {},
+  setTilt() {},
+  setZoom() {},
+};
+
+let DirectionsRendererMock = {
+  setMap() {},
+  setDirections() {},
+  setOptions() {},
+  setPanel() {},
+  setRouteIndex() {},
 };
 
 let SearchBoxMock = {
-  setBounds: function() {}
+  setBounds() {}
 };
 
 let googleApi = {
@@ -41,7 +49,8 @@ let googleApi = {
       SearchBox: sinon.stub().returns(SearchBoxMock)
     },
     Map: sinon.stub().returns(MapMock),
-    Marker: sinon.stub().returns(MarkerMock)
+    Marker: sinon.stub().returns(MarkerMock),
+    DirectionsRenderer: sinon.stub().returns(DirectionsRendererMock)
   }
 };
 

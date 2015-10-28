@@ -256,6 +256,15 @@ exports["default"] = ["places_changed"];
 module.exports = exports["default"];
 
 },{}],7:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = ["directions_changed"];
+module.exports = exports["default"];
+
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -276,7 +285,11 @@ var _SearchBoxEventsJs = require('./SearchBoxEvents.js');
 
 exports.searchBoxEvents = _interopRequire(_SearchBoxEventsJs);
 
-},{"./GoogleMapEvents.js":4,"./MarkerEvents.js":5,"./SearchBoxEvents.js":6}],8:[function(require,module,exports){
+var _directionsRendererEventsJs = require('./directionsRendererEvents.js');
+
+exports.directionsRendererEvents = _interopRequire(_directionsRendererEventsJs);
+
+},{"./GoogleMapEvents.js":4,"./MarkerEvents.js":5,"./SearchBoxEvents.js":6,"./directionsRendererEvents.js":7}],9:[function(require,module,exports){
 'use strict';
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
@@ -298,9 +311,74 @@ var SearchBoxTag = _interopRequireWildcard(_tagsSearchBoxTag);
 riot.mixin('GoogleMapMixin', new _mixins.GoogleMapMixin());
 riot.mixin('MarkerMixin', new _mixins.MarkerMixin());
 riot.mixin('SearchBoxMixin', new _mixins.SearchBoxMixin());
+riot.mixin('DirectionsRendererMixin', new _mixins.DirectionsRendererMixin());
 riot.mixin('StateMixin', new _mixins.StateMixin());
 
-},{"./mixins":13,"./tags/GoogleMap.tag":14,"./tags/Marker.tag":15,"./tags/SearchBox.tag":16}],9:[function(require,module,exports){
+},{"./mixins":15,"./tags/GoogleMap.tag":16,"./tags/Marker.tag":17,"./tags/SearchBox.tag":18}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = DirectionsRendererMixin;
+
+var _events = require('../events');
+
+var _utils = require('../utils');
+
+var DIRECTIONS_RENDERER_OPTIONS = ['directions', 'options', 'panel', 'routeindex'];
+
+var directionsRendererUpdaters = {
+  directions: function directions(_directions, tag) {
+    tag.directionsRenderer.setDirections(_directions);
+  },
+  options: function options(_options, tag) {
+    tag.directionsRenderer.setOptions(_options);
+  },
+  panel: function panel(_panel, tag) {
+    tag.directionsRenderer.setPanel(_panel);
+  },
+  routeindex: function routeindex(routeIndex, tag) {
+    tag.directionsRenderer.setRouteIndex(routeIndex);
+  }
+};
+
+exports.directionsRendererUpdaters = directionsRendererUpdaters;
+
+function DirectionsRendererMixin() {
+
+  this.init = function () {
+    this.on('mount', this.onMount);
+    this.on('unmount', this.onUnmount);
+    this.on('update', this.onUpdate);
+  };
+
+  this.onMount = function () {
+    var mapref = this.parent.map;
+    var options = (0, _utils.composeOptions)(DIRECTIONS_RENDERER_OPTIONS, this.opts);
+    this.directionsRenderer = this.createDirectionsRenderer(options, mapref);
+    this.registeredEvents = (0, _utils.registerEvents)(_events.directionsRendererEvents, this.opts, this.directionsRenderer);
+  };
+
+  this.onUnmount = function () {
+    (0, _utils.unregisterEvents)(this.registeredEvents);
+    this.directionsRenderer.setMap(null);
+    this.registeredEvents = undefined;
+  };
+
+  this.onUpdate = function () {
+    if (!this.directionsRenderer) return;
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, directionsRendererUpdaters, this);
+  };
+
+  this.createDirectionsRenderer = function (options, mapInstance) {
+    var renderer = new google.maps.DirectionsRenderer(options);
+    renderer.setMap(mapInstance);
+    return renderer;
+  };
+}
+
+},{"../events":8,"../utils":21}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -369,7 +447,7 @@ function GoogleMapMixin() {
   };
 }
 
-},{"../events":7,"../utils":19}],10:[function(require,module,exports){
+},{"../events":8,"../utils":21}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -466,7 +544,7 @@ function MarkerMixin() {
   };
 }
 
-},{"../events":7,"../utils":19}],11:[function(require,module,exports){
+},{"../events":8,"../utils":21}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -535,7 +613,7 @@ function SearchBoxMixin() {
   };
 }
 
-},{"../events":7,"../utils":19}],12:[function(require,module,exports){
+},{"../events":8,"../utils":21}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -559,7 +637,7 @@ function StateMixin() {
 
 module.exports = exports['default'];
 
-},{"es6-object-assign":3}],13:[function(require,module,exports){
+},{"es6-object-assign":3}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -580,32 +658,36 @@ var _SearchBoxMixin = require('./SearchBoxMixin');
 
 exports.SearchBoxMixin = _interopRequire(_SearchBoxMixin);
 
+var _DirectionsRendererMixin = require('./DirectionsRendererMixin');
+
+exports.DirectionsRendererMixin = _interopRequire(_DirectionsRendererMixin);
+
 var _StateMixin = require('./StateMixin');
 
 exports.StateMixin = _interopRequire(_StateMixin);
 
-},{"./GoogleMapMixin":9,"./MarkerMixin":10,"./SearchBoxMixin":11,"./StateMixin":12}],14:[function(require,module,exports){
+},{"./DirectionsRendererMixin":10,"./GoogleMapMixin":11,"./MarkerMixin":12,"./SearchBoxMixin":13,"./StateMixin":14}],16:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('google-map', '<div name="mapelem"></div> <yield ></yield>', function(opts) {
 this.mixin('GoogleMapMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('marker', '<yield ></yield>', function(opts) {
 this.mixin('MarkerMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search">', function(opts) {
 this.mixin('SearchBoxMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -633,7 +715,7 @@ function applyUpdaters(opts, prevOpts, updaters, tag) {
 
 module.exports = exports['default'];
 
-},{"equals":1}],18:[function(require,module,exports){
+},{"equals":1}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -665,7 +747,7 @@ function composeOptions(optionNames, opts) {
 
 module.exports = exports["default"];
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -690,7 +772,7 @@ var _applyUpdaters = require('./applyUpdaters');
 
 exports.applyUpdaters = _interopRequire(_applyUpdaters);
 
-},{"./applyUpdaters":17,"./composeOptions":18,"./registerEvents":20,"./unregisterEvents":21}],20:[function(require,module,exports){
+},{"./applyUpdaters":19,"./composeOptions":20,"./registerEvents":22,"./unregisterEvents":23}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -715,7 +797,7 @@ function registerEvents(eventList, handlers, instance) {
 
 module.exports = exports["default"];
 
-},{}],21:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -732,4 +814,4 @@ function unregisterEvents(registeredEvents) {
 
 module.exports = exports["default"];
 
-},{}]},{},[8]);
+},{}]},{},[9]);
