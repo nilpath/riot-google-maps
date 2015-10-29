@@ -1,8 +1,5 @@
 <simple-map>
-  <google-map 
-    zoom={this.data.zoom}
-    center={this.data.center}>
-  </google-map>
+  <google-map zoom={this.data.zoom} center={this.data.center} />
   
   <script type="es6">
   
