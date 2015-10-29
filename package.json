@@ -7,9 +7,14 @@
     "clean": "rimraf ./riot-google-maps.js ./riot-google-maps.min.js",
     "build:lib": "browserify -x riot -t babelify -t riotify src/index.js > riot-google-maps.js",
     "build:min": "uglifyjs -c -m -o riot-google-maps.min.js riot-google-maps.js",
-    "prebuild": "npm test && npm run-script clean",
-    "build": "npm run-script build:lib && npm run-script build:min",
-    "test": "./node_modules/karma/bin/karma start karma.conf.js"
+    "prebuild": "npm test && npm run clean",
+    "build": "npm run build:lib && npm run build:min",
+    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:prepare && gitbook build -g nilpath/riot-google-maps",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:nilpath/riot-google-maps.git gh-pages --force"
   },
   "keywords": [
     "riotjs",
@@ -29,6 +34,7 @@
     "equals": "^1.0.1",
     "es6-object-assign": "^1.0.1",
     "expect.js": "^0.3.1",
+    "gitbook-cli": "^1.0.0",
     "karma": "^0.13.9",
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",

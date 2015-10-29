@@ -1,1 +1,16 @@
-{}
+{
+  "gitbook": "2.4.3",
+  "structure": {
+    "summary": "docs/SUMMARY.md"
+  },
+  "plugins": ["edit-link", "prism", "-highlight", "github"],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/nilpath/riot-google-maps/tree/master",
+      "label": "Edit This Page"
+    },
+    "github": {
+      "url": "https://github.com/nilpath/riot-google-maps/"
+    }
+  }
+}
