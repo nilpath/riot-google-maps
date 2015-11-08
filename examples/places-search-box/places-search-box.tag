@@ -7,6 +7,7 @@
     <search-box controlposition={this.parent.search.controlposition} 
       bounds={this.parent.search.bounds}
       onplaces_changed={this.parent.handlePlacesChanged}
+      placeholder="custom placeholder text"
     />
     <marker each={this.parent.markers} 
       position={position} 

@@ -687,7 +687,7 @@ this.mixin('MarkerMixin', 'StateMixin');
 },{}],18:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search">', function(opts) {
+module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', function(opts) {
 this.mixin('SearchBoxMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
