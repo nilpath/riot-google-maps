@@ -292,27 +292,31 @@ exports.directionsRendererEvents = _interopRequire(_directionsRendererEventsJs);
 },{"./GoogleMapEvents.js":4,"./MarkerEvents.js":5,"./SearchBoxEvents.js":6,"./directionsRendererEvents.js":7}],9:[function(require,module,exports){
 'use strict';
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
 
 var _mixins = require('./mixins');
-
-var _tagsGoogleMapTag = require('./tags/GoogleMap.tag');
-
-var GoogleMapTag = _interopRequireWildcard(_tagsGoogleMapTag);
-
-var _tagsMarkerTag = require('./tags/Marker.tag');
-
-var MarkerTag = _interopRequireWildcard(_tagsMarkerTag);
-
-var _tagsSearchBoxTag = require('./tags/SearchBox.tag');
-
-var SearchBoxTag = _interopRequireWildcard(_tagsSearchBoxTag);
 
 riot.mixin('GoogleMapMixin', new _mixins.GoogleMapMixin());
 riot.mixin('MarkerMixin', new _mixins.MarkerMixin());
 riot.mixin('SearchBoxMixin', new _mixins.SearchBoxMixin());
 riot.mixin('DirectionsRendererMixin', new _mixins.DirectionsRendererMixin());
 riot.mixin('StateMixin', new _mixins.StateMixin());
+
+var _tagsGoogleMapTag = require('./tags/GoogleMap.tag');
+
+exports.GoogleMapTag = _interopRequire(_tagsGoogleMapTag);
+
+var _tagsMarkerTag = require('./tags/Marker.tag');
+
+exports.MarkerTag = _interopRequire(_tagsMarkerTag);
+
+var _tagsSearchBoxTag = require('./tags/SearchBox.tag');
+
+exports.SearchBoxTag = _interopRequire(_tagsSearchBoxTag);
 
 },{"./mixins":15,"./tags/GoogleMap.tag":16,"./tags/Marker.tag":17,"./tags/SearchBox.tag":18}],10:[function(require,module,exports){
 'use strict';

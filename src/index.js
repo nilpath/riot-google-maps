@@ -12,6 +12,6 @@ riot.mixin('SearchBoxMixin', new SearchBoxMixin());
 riot.mixin('DirectionsRendererMixin', new DirectionsRendererMixin());
 riot.mixin('StateMixin', new StateMixin());
 
-import * as GoogleMapTag from './tags/GoogleMap.tag';
-import * as MarkerTag from './tags/Marker.tag';
-import * as SearchBoxTag from './tags/SearchBox.tag';
+export { default as GoogleMapTag } from './tags/GoogleMap.tag';
+export { default as MarkerTag } from './tags/Marker.tag';
+export { default as SearchBoxTag } from './tags/SearchBox.tag';
