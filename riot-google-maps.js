@@ -452,7 +452,7 @@ function GoogleMapMixin() {
   };
 
   this.getMapId = function () {
-    return this.opts['map-id'];
+    return this.opts.mapId;
   };
 }
 
@@ -726,23 +726,23 @@ exports.StateMixin = _interopRequire(_StateMixin);
 },{"./DirectionsRendererMixin":10,"./GoogleMapMixin":11,"./MarkerMixin":12,"./RiotMapsMixin":13,"./SearchBoxMixin":14,"./StateMixin":15}],17:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag('google-map', '<div name="mapelem"></div> <yield ></yield>', function(opts) {
+module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yield>', '', '', function(opts) {
 this.mixin('GoogleMapMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],18:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag('marker', '<yield ></yield>', function(opts) {
+module.exports = riot.tag2('marker', '<yield></yield>', '', '', function(opts) {
 this.mixin('MarkerMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],19:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', function(opts) {
+module.exports = riot.tag2('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', '', '', function(opts) {
 this.mixin('SearchBoxMixin', 'StateMixin');
-});
+}, '{ }');
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],20:[function(require,module,exports){
 'use strict';

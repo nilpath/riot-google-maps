@@ -12,6 +12,7 @@ module.exports = function(config) {
       'karma-riot'
     ],
     files: [
+      'node_modules/phantomjs-polyfill/bind-polyfill.js',
       'node_modules/expect.js/index.js',
       'test/helpers/*.js',
       'test/mocks/*.js',

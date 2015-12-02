@@ -55,7 +55,7 @@ export default function GoogleMapMixin() {
   };
   
   this.getMapId = function () {
-    return this.opts['map-id'];
+    return this.opts.mapId;
   };
   
 }

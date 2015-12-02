@@ -39,15 +39,17 @@
     "karma-mocha": "^0.2.0",
     "karma-mocha-reporter": "^1.1.1",
     "karma-phantomjs-launcher": "^0.2.1",
-    "karma-riot": "^1.0.0",
+    "karma-riot": "^1.0.1",
     "karma-sinon": "^1.0.4",
+    "phantomjs": "^1.9.19",
+    "phantomjs-polyfill": "0.0.1",
     "rimraf": "^2.4.3",
     "riotify": "^0.1.2",
     "sinon": "^1.17.2",
     "uglify-js": "^2.5.0"
   },
   "dependencies": {
-    "riot": "2.2.4",
+    "riot": "2.3.11",
     "equals": "^1.0.1",
     "es6-object-assign": "^1.0.1"
   },
