@@ -577,7 +577,6 @@ function RiotMapsMixin() {
 
   this.init = function () {
     googleMapParser(this.tags['google-map']);
-    console.log(this, MapInstances);
   };
 
   this.getMap = function (mapId) {
