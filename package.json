@@ -1,6 +1,6 @@
 {
   "name": "riot-google-maps",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "riotjs google maps integration",
   "main": "riot-google-maps.js",
   "scripts": {
