@@ -53,6 +53,10 @@ export default function GoogleMapMixin() {
   this.createMap = function (elem, options) {
     return new google.maps.Map(elem, options);
   };
-
+  
+  this.getMapId = function () {
+    return this.opts['map-id'];
+  };
+  
 }
 

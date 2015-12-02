@@ -1,4 +1,5 @@
 import {
+  RiotMapsMixin,
   GoogleMapMixin,
   MarkerMixin,
   SearchBoxMixin,
@@ -6,6 +7,7 @@ import {
   StateMixin
 } from './mixins';
 
+riot.mixin('RiotMapsMixin', new RiotMapsMixin());
 riot.mixin('GoogleMapMixin', new GoogleMapMixin());
 riot.mixin('MarkerMixin', new MarkerMixin());
 riot.mixin('SearchBoxMixin', new SearchBoxMixin());

@@ -1,5 +1,5 @@
 <places-search-box>
-  <google-map zoom={this.data.zoom} 
+  <google-map map-id="my-map" zoom={this.data.zoom} 
     center={this.data.center}
     mapTypeId={this.data.mapTypeId}
     onbounds_changed={this.handleBoundsChanged}
@@ -17,6 +17,8 @@
   
   <script type="es6">
     
+    this.mixin('RiotMapsMixin');
+    
     this.data = {
       center: {lat: -33.8688, lng: 151.2195},
       zoom: 13,
@@ -31,12 +33,12 @@
     this.markers = [];
     
     this.handleBoundsChanged = () => {
-      this.search.bounds = this.tags['google-map'].map.getBounds();
+      this.search.bounds = this.getMap('my-map').getBounds();
       this.update();
     };
     
     this.handlePlacesChanged = () => {
-      var places = this.tags['google-map'].tags['search-box'].searchBox.getPlaces();
+      var places = this.getSearchBox('my-map').getPlaces();
       
       if (places.length == 0) {
         return;

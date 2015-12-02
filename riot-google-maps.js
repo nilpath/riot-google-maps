@@ -300,6 +300,7 @@ function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : 
 
 var _mixins = require('./mixins');
 
+riot.mixin('RiotMapsMixin', new _mixins.RiotMapsMixin());
 riot.mixin('GoogleMapMixin', new _mixins.GoogleMapMixin());
 riot.mixin('MarkerMixin', new _mixins.MarkerMixin());
 riot.mixin('SearchBoxMixin', new _mixins.SearchBoxMixin());
@@ -318,7 +319,7 @@ var _tagsSearchBoxTag = require('./tags/SearchBox.tag');
 
 exports.SearchBoxTag = _interopRequire(_tagsSearchBoxTag);
 
-},{"./mixins":15,"./tags/GoogleMap.tag":16,"./tags/Marker.tag":17,"./tags/SearchBox.tag":18}],10:[function(require,module,exports){
+},{"./mixins":16,"./tags/GoogleMap.tag":17,"./tags/Marker.tag":18,"./tags/SearchBox.tag":19}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -382,7 +383,7 @@ function DirectionsRendererMixin() {
   };
 }
 
-},{"../events":8,"../utils":21}],11:[function(require,module,exports){
+},{"../events":8,"../utils":22}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -449,9 +450,13 @@ function GoogleMapMixin() {
   this.createMap = function (elem, options) {
     return new google.maps.Map(elem, options);
   };
+
+  this.getMapId = function () {
+    return this.opts['map-id'];
+  };
 }
 
-},{"../events":8,"../utils":21}],12:[function(require,module,exports){
+},{"../events":8,"../utils":22}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -548,7 +553,52 @@ function MarkerMixin() {
   };
 }
 
-},{"../events":8,"../utils":21}],13:[function(require,module,exports){
+},{"../events":8,"../utils":22}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = RiotMapsMixin;
+
+var MapInstances = [];
+
+function googleMapParser(tag) {
+  if (tag instanceof Array) {
+    tag.forEach(function (instance) {
+      return MapInstances.push(instance);
+    });
+  } else {
+    MapInstances.push(tag);
+  }
+}
+
+function RiotMapsMixin() {
+
+  this.init = function () {
+    googleMapParser(this.tags['google-map']);
+    console.log(this, MapInstances);
+  };
+
+  this.getMap = function (mapId) {
+    var matchingTags = MapInstances.filter(function (tag) {
+      return tag.getMapId() === mapId;
+    });
+    return matchingTags[0].map;
+  };
+
+  this.getSearchBox = function (mapId) {
+    var matchingTags = MapInstances.filter(function (tag) {
+      return tag.getMapId() === mapId;
+    });
+    var searchTag = matchingTags[0].tags['search-box'];
+    return searchTag ? searchTag.searchBox : undefined;
+  };
+}
+
+module.exports = exports['default'];
+
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -617,7 +667,7 @@ function SearchBoxMixin() {
   };
 }
 
-},{"../events":8,"../utils":21}],14:[function(require,module,exports){
+},{"../events":8,"../utils":22}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -641,7 +691,7 @@ function StateMixin() {
 
 module.exports = exports['default'];
 
-},{"es6-object-assign":3}],15:[function(require,module,exports){
+},{"es6-object-assign":3}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -649,6 +699,10 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : obj; }
+
+var _RiotMapsMixin = require('./RiotMapsMixin');
+
+exports.RiotMapsMixin = _interopRequire(_RiotMapsMixin);
 
 var _GoogleMapMixin = require('./GoogleMapMixin');
 
@@ -670,28 +724,28 @@ var _StateMixin = require('./StateMixin');
 
 exports.StateMixin = _interopRequire(_StateMixin);
 
-},{"./DirectionsRendererMixin":10,"./GoogleMapMixin":11,"./MarkerMixin":12,"./SearchBoxMixin":13,"./StateMixin":14}],16:[function(require,module,exports){
+},{"./DirectionsRendererMixin":10,"./GoogleMapMixin":11,"./MarkerMixin":12,"./RiotMapsMixin":13,"./SearchBoxMixin":14,"./StateMixin":15}],17:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('google-map', '<div name="mapelem"></div> <yield ></yield>', function(opts) {
 this.mixin('GoogleMapMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('marker', '<yield ></yield>', function(opts) {
 this.mixin('MarkerMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', function(opts) {
 this.mixin('SearchBoxMixin', 'StateMixin');
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -719,7 +773,7 @@ function applyUpdaters(opts, prevOpts, updaters, tag) {
 
 module.exports = exports['default'];
 
-},{"equals":1}],20:[function(require,module,exports){
+},{"equals":1}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -751,7 +805,7 @@ function composeOptions(optionNames, opts) {
 
 module.exports = exports["default"];
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -776,7 +830,7 @@ var _applyUpdaters = require('./applyUpdaters');
 
 exports.applyUpdaters = _interopRequire(_applyUpdaters);
 
-},{"./applyUpdaters":19,"./composeOptions":20,"./registerEvents":22,"./unregisterEvents":23}],22:[function(require,module,exports){
+},{"./applyUpdaters":20,"./composeOptions":21,"./registerEvents":23,"./unregisterEvents":24}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -801,7 +855,7 @@ function registerEvents(eventList, handlers, instance) {
 
 module.exports = exports["default"];
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
