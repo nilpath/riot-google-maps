@@ -1,8 +1,8 @@
 <directions-renderer>
   <yield />
-  
-  <script type="es6">
+
+  <script>
     this.mixin('DirectionsRendererMixin', 'StateMixin');
   </script>
-  
+
 </directions-renderer>

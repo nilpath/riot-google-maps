@@ -1,7 +1,7 @@
 <marker>
   <yield />
-  
-  <script type="es6">
+
+  <script>
     this.mixin('MarkerMixin', 'StateMixin');
   </script>
 </marker>

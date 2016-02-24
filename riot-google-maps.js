@@ -121,7 +121,55 @@ function getEnumerableProperties (object) {
 
 module.exports = equal
 
-},{"jkroso-type":2}],2:[function(require,module,exports){
+},{"jkroso-type":3}],2:[function(require,module,exports){
+/**
+ * Code refactored from Mozilla Developer Network:
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+ */
+
+'use strict';
+
+function assign(target, firstSource) {
+  if (target === undefined || target === null) {
+    throw new TypeError('Cannot convert first argument to object');
+  }
+
+  var to = Object(target);
+  for (var i = 1; i < arguments.length; i++) {
+    var nextSource = arguments[i];
+    if (nextSource === undefined || nextSource === null) {
+      continue;
+    }
+
+    var keysArray = Object.keys(Object(nextSource));
+    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+      var nextKey = keysArray[nextIndex];
+      var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+      if (desc !== undefined && desc.enumerable) {
+        to[nextKey] = nextSource[nextKey];
+      }
+    }
+  }
+  return to;
+}
+
+function polyfill() {
+  if (!Object.assign) {
+    Object.defineProperty(Object, 'assign', {
+      enumerable: false,
+      configurable: true,
+      writable: true,
+      value: assign
+    });
+  }
+}
+
+module.exports = {
+  assign: assign,
+  polyfill: polyfill
+};
+
+},{}],3:[function(require,module,exports){
 var toString = {}.toString
 var DomNode = typeof window != 'undefined'
   ? window.Node
@@ -179,54 +227,6 @@ var types = exports.types = {
   '[object File]': 'file',
   '[object Blob]': 'blob'
 }
-
-},{}],3:[function(require,module,exports){
-/**
- * Code refactored from Mozilla Developer Network:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
- */
-
-'use strict';
-
-function assign(target, firstSource) {
-  if (target === undefined || target === null) {
-    throw new TypeError('Cannot convert first argument to object');
-  }
-
-  var to = Object(target);
-  for (var i = 1; i < arguments.length; i++) {
-    var nextSource = arguments[i];
-    if (nextSource === undefined || nextSource === null) {
-      continue;
-    }
-
-    var keysArray = Object.keys(Object(nextSource));
-    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-      var nextKey = keysArray[nextIndex];
-      var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-      if (desc !== undefined && desc.enumerable) {
-        to[nextKey] = nextSource[nextKey];
-      }
-    }
-  }
-  return to;
-}
-
-function polyfill() {
-  if (!Object.assign) {
-    Object.defineProperty(Object, 'assign', {
-      enumerable: false,
-      configurable: true,
-      writable: true,
-      value: assign
-    });
-  }
-}
-
-module.exports = {
-  assign: assign,
-  polyfill: polyfill
-};
 
 },{}],4:[function(require,module,exports){
 "use strict";
@@ -690,7 +690,7 @@ function StateMixin() {
 
 module.exports = exports['default'];
 
-},{"es6-object-assign":3}],16:[function(require,module,exports){
+},{"es6-object-assign":2}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -727,22 +727,25 @@ exports.StateMixin = _interopRequire(_StateMixin);
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yield>', '', '', function(opts) {
-this.mixin('GoogleMapMixin', 'StateMixin');
+    this.mixin('GoogleMapMixin', 'StateMixin');
 });
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],18:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('marker', '<yield></yield>', '', '', function(opts) {
-this.mixin('MarkerMixin', 'StateMixin');
+    this.mixin('MarkerMixin', 'StateMixin');
 });
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],19:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', '', '', function(opts) {
-this.mixin('SearchBoxMixin', 'StateMixin');
+    this.mixin('SearchBoxMixin', 'StateMixin');
 }, '{ }');
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],20:[function(require,module,exports){
 'use strict';
