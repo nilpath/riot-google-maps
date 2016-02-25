@@ -426,14 +426,18 @@ exports.googleMapUpdaters = googleMapUpdaters;
 function GoogleMapMixin() {
 
   this.init = function () {
+    this.on('before-mount', this.onBeforeMount);
     this.on('mount', this.onMount);
     this.on('unmount', this.onUnmount);
     this.on('update', this.onUpdate);
   };
 
-  this.onMount = function () {
+  this.onBeforeMount = function () {
     var mapOptions = (0, _utils.composeOptions)(MAP_OPTIONS, this.opts);
     this.map = this.createMap(this.mapelem, mapOptions);
+  };
+
+  this.onMount = function () {
     this.registeredEvents = (0, _utils.registerEvents)(_events.googleMapEvents, this.opts, this.map);
   };
 
