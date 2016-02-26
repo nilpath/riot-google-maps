@@ -234,7 +234,7 @@ var types = exports.types = {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ["bounds_changed", "center_changed", "click", "dblclick", "drag", "dragend", "dragstart", "heading_changed", "idle", "maptypeid_changed", "mousemove", "mouseout", "mouseover", "projection_changed", "resize", "rightclick", "tilesloaded", "tilt_changed", "zoom_changed"];
+exports["default"] = ["directions_changed"];
 module.exports = exports["default"];
 
 },{}],5:[function(require,module,exports){
@@ -243,7 +243,7 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ["animation_changed", "click", "clickable_changed", "cursor_changed", "dblclick", "drag", "dragend", "draggable_changed", "dragstart", "flat_changed", "icon_changed", "mousedown", "mouseout", "mouseover", "mouseup", "position_changed", "rightclick", "shape_changed", "title_changed", "visible_changed", "zindex_changed"];
+exports["default"] = ["bounds_changed", "center_changed", "click", "dblclick", "drag", "dragend", "dragstart", "heading_changed", "idle", "maptypeid_changed", "mousemove", "mouseout", "mouseover", "projection_changed", "resize", "rightclick", "tilesloaded", "tilt_changed", "zoom_changed"];
 module.exports = exports["default"];
 
 },{}],6:[function(require,module,exports){
@@ -252,7 +252,7 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ["places_changed"];
+exports["default"] = ["closeclick", "content_changed", "domready", "position_changed", "zindex_changed"];
 module.exports = exports["default"];
 
 },{}],7:[function(require,module,exports){
@@ -261,10 +261,19 @@ module.exports = exports["default"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = ["directions_changed"];
+exports["default"] = ["animation_changed", "click", "clickable_changed", "cursor_changed", "dblclick", "drag", "dragend", "draggable_changed", "dragstart", "flat_changed", "icon_changed", "mousedown", "mouseout", "mouseover", "mouseup", "position_changed", "rightclick", "shape_changed", "title_changed", "visible_changed", "zindex_changed"];
 module.exports = exports["default"];
 
 },{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = ["places_changed"];
+module.exports = exports["default"];
+
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -285,11 +294,15 @@ var _SearchBoxEventsJs = require('./SearchBoxEvents.js');
 
 exports.searchBoxEvents = _interopRequire(_SearchBoxEventsJs);
 
-var _directionsRendererEventsJs = require('./directionsRendererEvents.js');
+var _DirectionsRendererEventsJs = require('./DirectionsRendererEvents.js');
 
-exports.directionsRendererEvents = _interopRequire(_directionsRendererEventsJs);
+exports.directionsRendererEvents = _interopRequire(_DirectionsRendererEventsJs);
 
-},{"./GoogleMapEvents.js":4,"./MarkerEvents.js":5,"./SearchBoxEvents.js":6,"./directionsRendererEvents.js":7}],9:[function(require,module,exports){
+var _InfoWindowEventsJs = require('./InfoWindowEvents.js');
+
+exports.infoWindowEvents = _interopRequire(_InfoWindowEventsJs);
+
+},{"./DirectionsRendererEvents.js":4,"./GoogleMapEvents.js":5,"./InfoWindowEvents.js":6,"./MarkerEvents.js":7,"./SearchBoxEvents.js":8}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -305,6 +318,7 @@ riot.mixin('GoogleMapMixin', new _mixins.GoogleMapMixin());
 riot.mixin('MarkerMixin', new _mixins.MarkerMixin());
 riot.mixin('SearchBoxMixin', new _mixins.SearchBoxMixin());
 riot.mixin('DirectionsRendererMixin', new _mixins.DirectionsRendererMixin());
+riot.mixin('InfoWindowMixin', new _mixins.InfoWindowMixin());
 riot.mixin('StateMixin', new _mixins.StateMixin());
 
 var _tagsGoogleMapTag = require('./tags/GoogleMap.tag');
@@ -319,7 +333,11 @@ var _tagsSearchBoxTag = require('./tags/SearchBox.tag');
 
 exports.SearchBoxTag = _interopRequire(_tagsSearchBoxTag);
 
-},{"./mixins":16,"./tags/GoogleMap.tag":17,"./tags/Marker.tag":18,"./tags/SearchBox.tag":19}],10:[function(require,module,exports){
+var _tagsInfoWindowTag = require('./tags/InfoWindow.tag');
+
+exports.InfoWindowTag = _interopRequire(_tagsInfoWindowTag);
+
+},{"./mixins":18,"./tags/GoogleMap.tag":19,"./tags/InfoWindow.tag":20,"./tags/Marker.tag":21,"./tags/SearchBox.tag":22}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -383,7 +401,7 @@ function DirectionsRendererMixin() {
   };
 }
 
-},{"../events":8,"../utils":22}],11:[function(require,module,exports){
+},{"../events":9,"../utils":25}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -456,7 +474,104 @@ function GoogleMapMixin() {
   };
 }
 
-},{"../events":8,"../utils":22}],12:[function(require,module,exports){
+},{"../events":9,"../utils":25}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = InfoWindowMixin;
+
+var _events = require('../events');
+
+var _utils = require('../utils');
+
+var INFO_WINDOW_OPTIONS = ['content', 'options', 'position', 'zIndex'];
+
+var infoWindowUpdaters = {
+  //children(children, tag) { setContentForOptionalReactElement(children, component.getInfoWindow()); },
+  content: function content(_content, tag) {
+    tag.infoWindow.setContent(_content);
+  },
+  options: function options(_options, tag) {
+    tag.infoWindow.setOptions(_options);
+  },
+  position: function position(_position, tag) {
+    tag.infoWindow.setPosition(_position);
+  },
+  zIndex: function zIndex(_zIndex, tag) {
+    tag.infoWindow.setZIndex(_zIndex);
+  }
+};
+
+exports.infoWindowUpdaters = infoWindowUpdaters;
+function setChildrenAsContent(children, infoWindow) {
+  var domEl = children[0].cloneNode(true);
+  infoWindow.setContent(domEl);
+}
+
+function isVisible(opts) {
+  return opts['if'] === true || opts.show === true || opts.hide === false;
+}
+
+function showInfoWindow(infoWindow, mapInstance, anchorInstance) {
+  if (anchorInstance) {
+    infoWindow.open(mapInstance, anchorInstance);
+  } else {
+    infoWindow.setMap(mapInstance);
+  }
+}
+
+function InfoWindowMixin() {
+
+  this.init = function () {
+    this.on('mount', this.onMount);
+    this.on('unmount', this.onUnmount);
+    this.on('update', this.onUpdate);
+  };
+
+  this.onMount = function () {
+    var mapref = this.parent.getMap();
+    var anchorref = this.parent.anchorRef;
+    var infoWindowOptions = (0, _utils.composeOptions)(INFO_WINDOW_OPTIONS, this.opts);
+    this.infoWindow = this.createInfoWindow(infoWindowOptions);
+    this.registeredEvents = (0, _utils.registerEvents)(_events.infoWindowEvents, this.opts, this.infoWindow);
+    showInfoWindow(this.infoWindow, mapref, anchorref);
+  };
+
+  this.onUnmount = function () {
+    this.infoWindow.setMap(null);
+    (0, _utils.unregisterEvents)(this.registeredEvents);
+    this.registeredEvents = undefined;
+  };
+
+  this.onUpdate = function () {
+    if (!this.infoWindow) {
+      return;
+    }
+    var mapref = this.parent.getMap();
+    var anchorref = this.parent.anchorRef;
+
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, infoWindowUpdaters, this);
+    setChildrenAsContent(this.root.children, this.infoWindow);
+
+    if (isVisible(this.opts)) {
+      showInfoWindow(this.infoWindow, mapref, anchorref);
+    }
+  };
+
+  this.createInfoWindow = function (options) {
+    var infoWindow = new google.maps.InfoWindow(options);
+
+    if (this.root.children.length > 0) {
+      setChildrenAsContent(this.root.children, infoWindow);
+    }
+
+    return infoWindow;
+  };
+}
+
+},{"../events":9,"../utils":25}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -532,7 +647,8 @@ function MarkerMixin() {
     var mapref = this.parent.map;
     var markerOptions = (0, _utils.composeOptions)(MARKER_OPTIONS, this.opts);
     this.marker = this.createMarker(mapref, markerOptions);
-    this.registeredEvents = (0, _utils.registerEvents)(_events.markerEvents, this.opts, mapref);
+    this.anchorRef = this.marker;
+    this.registeredEvents = (0, _utils.registerEvents)(_events.markerEvents, this.opts, this.marker);
   };
 
   this.onUnmount = function () {
@@ -551,9 +667,13 @@ function MarkerMixin() {
     marker.setMap(mapInstance);
     return marker;
   };
+
+  this.getMap = function () {
+    return this.parent.map;
+  };
 }
 
-},{"../events":8,"../utils":22}],13:[function(require,module,exports){
+},{"../events":9,"../utils":25}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -597,7 +717,7 @@ function RiotMapsMixin() {
 
 module.exports = exports['default'];
 
-},{}],14:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -666,7 +786,7 @@ function SearchBoxMixin() {
   };
 }
 
-},{"../events":8,"../utils":22}],15:[function(require,module,exports){
+},{"../events":9,"../utils":25}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -690,7 +810,7 @@ function StateMixin() {
 
 module.exports = exports['default'];
 
-},{"es6-object-assign":2}],16:[function(require,module,exports){
+},{"es6-object-assign":2}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -719,11 +839,15 @@ var _DirectionsRendererMixin = require('./DirectionsRendererMixin');
 
 exports.DirectionsRendererMixin = _interopRequire(_DirectionsRendererMixin);
 
+var _InfoWindowMixin = require('./InfoWindowMixin');
+
+exports.InfoWindowMixin = _interopRequire(_InfoWindowMixin);
+
 var _StateMixin = require('./StateMixin');
 
 exports.StateMixin = _interopRequire(_StateMixin);
 
-},{"./DirectionsRendererMixin":10,"./GoogleMapMixin":11,"./MarkerMixin":12,"./RiotMapsMixin":13,"./SearchBoxMixin":14,"./StateMixin":15}],17:[function(require,module,exports){
+},{"./DirectionsRendererMixin":11,"./GoogleMapMixin":12,"./InfoWindowMixin":13,"./MarkerMixin":14,"./RiotMapsMixin":15,"./SearchBoxMixin":16,"./StateMixin":17}],19:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yield>', '', '', function(opts) {
@@ -731,7 +855,15 @@ module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yi
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
+(function (global){
+var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
+module.exports = riot.tag2('info-window', '<yield></yield>', '', '', function(opts) {
+    this.mixin('InfoWindowMixin', 'StateMixin');
+});
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],21:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('marker', '<yield></yield>', '', '', function(opts) {
@@ -739,7 +871,7 @@ module.exports = riot.tag2('marker', '<yield></yield>', '', '', function(opts) {
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
 module.exports = riot.tag2('search-box', '<input class="search-box-input" type="text" name="search" placeholder="{opts.placeholder}">', '', '', function(opts) {
@@ -747,7 +879,7 @@ module.exports = riot.tag2('search-box', '<input class="search-box-input" type="
 }, '{ }');
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],20:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -775,7 +907,7 @@ function applyUpdaters(opts, prevOpts, updaters, tag) {
 
 module.exports = exports['default'];
 
-},{"equals":1}],21:[function(require,module,exports){
+},{"equals":1}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -807,7 +939,7 @@ function composeOptions(optionNames, opts) {
 
 module.exports = exports["default"];
 
-},{}],22:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -832,7 +964,7 @@ var _applyUpdaters = require('./applyUpdaters');
 
 exports.applyUpdaters = _interopRequire(_applyUpdaters);
 
-},{"./applyUpdaters":20,"./composeOptions":21,"./registerEvents":23,"./unregisterEvents":24}],23:[function(require,module,exports){
+},{"./applyUpdaters":23,"./composeOptions":24,"./registerEvents":26,"./unregisterEvents":27}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -857,7 +989,7 @@ function registerEvents(eventList, handlers, instance) {
 
 module.exports = exports["default"];
 
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -874,4 +1006,4 @@ function unregisterEvents(registeredEvents) {
 
 module.exports = exports["default"];
 
-},{}]},{},[9]);
+},{}]},{},[10]);
