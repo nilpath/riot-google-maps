@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      google-map > div {
+        display: block;
+        height: 100%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <simple-map />
+
+    <!-- example tags -->
+    <script src="simple-info-window.tag" type="riot/tag"></script>
+
+    <!-- scripts we need -->
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://cdn.jsdelivr.net/babel/5.8.23/browser.js"></script> <!-- should not be used in production! -->
+    <script src="https://cdn.jsdelivr.net/riot/2.3.11/riot+compiler.min.js"></script>
+
+    <!-- library tags -->
+    <script src="../../riot-google-maps.js"></script>
+
+    <!-- mount this app -->
+    <script> riot.mount('*') </script>
+  </body>
+</html>
