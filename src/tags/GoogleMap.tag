@@ -1,4 +1,4 @@
-<google-map>
+<google-map style="overflow: hidden;">
   <div name="mapelem"></div>
   <yield />
 
