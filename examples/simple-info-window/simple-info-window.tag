@@ -1,4 +1,4 @@
-<simple-map>
+<simple-info-window>
   <google-map zoom={this.data.zoom} center={this.data.center}>
     <marker position={this.parent.marker.position} title={this.parent.marker.title} onclick={this.parent.showInfo}>
       <info-window if={this.parent.parent.marker.showInfo} oncloseclick={this.parent.parent.hideInfo}>
@@ -52,4 +52,4 @@
     };
 
   </script>
-</simple-map>
+</simple-info-window>
