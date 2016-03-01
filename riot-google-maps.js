@@ -850,7 +850,7 @@ exports.StateMixin = _interopRequire(_StateMixin);
 },{"./DirectionsRendererMixin":11,"./GoogleMapMixin":12,"./InfoWindowMixin":13,"./MarkerMixin":14,"./RiotMapsMixin":15,"./SearchBoxMixin":16,"./StateMixin":17}],19:[function(require,module,exports){
 (function (global){
 var riot = (typeof window !== "undefined" ? window['riot'] : typeof global !== "undefined" ? global['riot'] : null);
-module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yield>', '', '', function(opts) {
+module.exports = riot.tag2('google-map', '<div name="mapelem"></div> <yield></yield>', '', 'style="overflow: hidden;"', function(opts) {
     this.mixin('GoogleMapMixin', 'StateMixin');
 });
 

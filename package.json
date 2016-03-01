@@ -6,9 +6,10 @@
   "scripts": {
     "clean": "rimraf ./riot-google-maps.js ./riot-google-maps.min.js",
     "build:lib": "browserify -x riot -t babelify -t riotify --type es6 src/index.js > riot-google-maps.js",
+    "build:addons": "browserify -x riot -t babelify -t riotify --type es6 src/addons/InfoBox.js > addons/riot-google-maps.infobox.js",
     "build:min": "uglifyjs -c -m -o riot-google-maps.min.js riot-google-maps.js",
     "prebuild": "npm test && npm run clean",
-    "build": "npm run build:lib && npm run build:min",
+    "build": "npm run build:lib && npm run build:addons && npm run build:min",
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
@@ -50,9 +51,10 @@
     "uglify-js": "^2.5.0"
   },
   "dependencies": {
-    "riot": "2.3.11",
     "equals": "^1.0.1",
-    "es6-object-assign": "^1.0.1"
+    "es6-object-assign": "^1.0.1",
+    "google-maps-infobox": "^1.1.13",
+    "riot": "2.3.11"
   },
   "browserify-shim": {
     "riot": "global:riot"
