@@ -1061,7 +1061,7 @@ var _utils = require('../../utils');
 
 var INFO_BOX_OPTIONS = ['content', 'options', 'position', 'zIndex', 'visible'];
 
-var infoWindowUpdaters = {
+var infoBoxUpdaters = {
   content: function content(_content, tag) {
     tag.infoBox.setContent(_content);
   },
@@ -1079,7 +1079,7 @@ var infoWindowUpdaters = {
   }
 };
 
-exports.infoWindowUpdaters = infoWindowUpdaters;
+exports.infoBoxUpdaters = infoBoxUpdaters;
 function setChildrenAsContent(children, infoBox) {
   var domEl = children[0].cloneNode(true);
   infoBox.setContent(domEl);
@@ -1115,23 +1115,25 @@ function InfoBoxMixin() {
   };
 
   this.onUnmount = function () {
-    this.infoWindow.setMap(null);
+    this.infoBox.setMap(null);
     (0, _utils.unregisterEvents)(this.registeredEvents);
     this.registeredEvents = undefined;
   };
 
   this.onUpdate = function () {
-    if (!this.infoWindow) {
+    if (!this.infoBox) {
       return;
     }
     var mapref = this.parent.getMap();
     var anchorref = this.parent.anchorRef;
 
-    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, infoWindowUpdaters, this);
-    setChildrenAsContent(this.root.children, this.infoWindow);
+    (0, _utils.applyUpdaters)(this.opts, this.prevOpts, infoBoxUpdaters, this);
+    setChildrenAsContent(this.root.children, this.infoBox);
 
     if (isVisible(this.opts)) {
-      showInfoWindow(this.infoWindow, mapref, anchorref);
+      showInfoBox(this.infoBox, mapref, anchorref);
+    } else {
+      this.infoBox.close();
     }
   };
 

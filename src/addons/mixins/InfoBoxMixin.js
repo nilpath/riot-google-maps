@@ -15,7 +15,7 @@ const INFO_BOX_OPTIONS = [
   'visible'
 ];
 
-export const infoWindowUpdaters = {
+export const infoBoxUpdaters = {
   content(content, tag) { tag.infoBox.setContent(content); },
   options(options, tag) { tag.infoBox.setOptions(options); },
   position(position, tag) { tag.infoBox.setPosition(position); },
@@ -58,21 +58,23 @@ export default function InfoBoxMixin() {
   };
 
   this.onUnmount = function() {
-    this.infoWindow.setMap(null);
+    this.infoBox.setMap(null);
     unregisterEvents(this.registeredEvents);
     this.registeredEvents = undefined;
   };
 
   this.onUpdate = function() {
-    if(!this.infoWindow) { return; }
+    if(!this.infoBox) { return; }
     const mapref = this.parent.getMap();
     const anchorref = this.parent.anchorRef;
 
-    applyUpdaters(this.opts, this.prevOpts, infoWindowUpdaters, this);
-    setChildrenAsContent(this.root.children, this.infoWindow);
-
+    applyUpdaters(this.opts, this.prevOpts, infoBoxUpdaters, this);
+    setChildrenAsContent(this.root.children, this.infoBox);
+    
     if(isVisible(this.opts)) {
-      showInfoWindow(this.infoWindow, mapref, anchorref);
+      showInfoBox(this.infoBox, mapref, anchorref);
+    } else {
+      this.infoBox.close();
     }
   };
 
