@@ -337,7 +337,7 @@ var _tagsInfoWindowTag = require('./tags/InfoWindow.tag');
 
 exports.InfoWindowTag = _interopRequire(_tagsInfoWindowTag);
 
-if (!!window.google && !!window.console) {
+if (!window.google && !!window.console) {
   console.warn('could not find google maps.');
 }
 
