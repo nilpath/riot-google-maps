@@ -337,6 +337,10 @@ var _tagsInfoWindowTag = require('./tags/InfoWindow.tag');
 
 exports.InfoWindowTag = _interopRequire(_tagsInfoWindowTag);
 
+if (!!window.google && !!window.console) {
+  console.warn('could not find google maps.');
+}
+
 },{"./mixins":18,"./tags/GoogleMap.tag":19,"./tags/InfoWindow.tag":20,"./tags/Marker.tag":21,"./tags/SearchBox.tag":22}],11:[function(require,module,exports){
 'use strict';
 
@@ -971,7 +975,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = registerEvents;
-var addListener = google.maps.event.addListener;
+
+var addListener = function addListener() {};
+if (!!window.google) {
+  addListener = google.maps.event.addListener;
+};
 
 function registerEvents(eventList, handlers, instance) {
   var registeredEvents = eventList.reduce(function (acc, eventName) {
@@ -996,7 +1004,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = unregisterEvents;
-var removeListener = google.maps.event.removeListener;
+var removeListener = function removeListener() {};
+if (!!window.google) {
+  removeListener = google.maps.event.removeListener;
+};
 
 function unregisterEvents(registeredEvents) {
   registeredEvents.forEach(function (registeredEvent) {

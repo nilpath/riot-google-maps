@@ -1013,6 +1013,8 @@ function _interopRequire(obj) { return obj && obj.__esModule ? obj['default'] : 
 
 var _mixins = require('./mixins');
 
+//http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/docs/reference.html
+
 riot.mixin('InfoBoxMixin', new _mixins.InfoBoxMixin());
 
 var _tagsInfoBoxTag = require('./tags/InfoBox.tag');
@@ -1260,7 +1262,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = registerEvents;
-var addListener = google.maps.event.addListener;
+
+var addListener = function addListener() {};
+if (!!window.google) {
+  addListener = google.maps.event.addListener;
+};
 
 function registerEvents(eventList, handlers, instance) {
   var registeredEvents = eventList.reduce(function (acc, eventName) {
@@ -1285,7 +1291,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = unregisterEvents;
-var removeListener = google.maps.event.removeListener;
+var removeListener = function removeListener() {};
+if (!!window.google) {
+  removeListener = google.maps.event.removeListener;
+};
 
 function unregisterEvents(registeredEvents) {
   registeredEvents.forEach(function (registeredEvent) {

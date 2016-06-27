@@ -20,3 +20,5 @@ export { default as GoogleMapTag } from './tags/GoogleMap.tag';
 export { default as MarkerTag } from './tags/Marker.tag';
 export { default as SearchBoxTag } from './tags/SearchBox.tag';
 export { default as InfoWindowTag } from './tags/InfoWindow.tag';
+
+if(!!window.google && !!window.console) { console.warn('could not find google maps.'); }
